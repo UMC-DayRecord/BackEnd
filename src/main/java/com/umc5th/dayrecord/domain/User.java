@@ -17,13 +17,20 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 20, nullable = false)
     private String name;
 
+    @Column(length = 20, unique = true, nullable = false)
     private String nickname;
 
+    @Column(nullable = false)
     private String password;
 
+    @Column(length = 15, unique = true, nullable = false)
     private String phoneNumber;
+
+    @Column(length = 30, unique = true, nullable = false)
+    private String email;
 
     private Boolean streamPurchase;
 
@@ -31,6 +38,7 @@ public class User extends BaseEntity {
 
     private Boolean autoIndexPurchase;
 
+    @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
     private Long streamCount;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
