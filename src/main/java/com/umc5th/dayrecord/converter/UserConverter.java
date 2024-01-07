@@ -3,10 +3,7 @@ package com.umc5th.dayrecord.converter;
 import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.domain.UserPhoto;
 import com.umc5th.dayrecord.web.dto.UserDTO;
-import lombok.AccessLevel;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 
@@ -20,6 +17,7 @@ public class UserConverter {
                 .nickname(request.getNickName())
                 .password(request.getPassword())
                 .phoneNumber(request.getPhoneNumber())
+                .email(request.getEmail())
                 .streamPurchase(false)
                 .addBlockPurchase(false)
                 .autoIndexPurchase(false)

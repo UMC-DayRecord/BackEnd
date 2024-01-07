@@ -20,6 +20,8 @@ public class UserDTO {
 
         private String phoneNumber;
 
+        private String email;
+
 //        private UserPhoto userPhoto;
     }
 
