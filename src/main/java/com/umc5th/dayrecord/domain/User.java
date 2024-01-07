@@ -32,10 +32,13 @@ public class User extends BaseEntity {
     @Column(length = 30, unique = true, nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private Boolean streamPurchase;
 
+    @Column(nullable = false)
     private Boolean addBlockPurchase;
 
+    @Column(nullable = false)
     private Boolean autoIndexPurchase;
 
     @Column(nullable = false, columnDefinition = "BIGINT DEFAULT 0")
