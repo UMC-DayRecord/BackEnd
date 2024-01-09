@@ -34,7 +34,8 @@ public class UserContoller {
      * @return ApiResponse
      */
     @PostMapping("")
-    public ApiResponse<UserDTO.UserRegisterResponseDTO> register(@RequestBody @Valid UserDTO.UserRegisterRequestDTO request) {
+    public ApiResponse<UserDTO.UserRegisterResponseDTO> register(
+            @RequestBody @Valid UserDTO.UserRegisterRequestDTO request) {
         UserDTO.UserRegisterResponseDTO result = userCommandService.register(request);
         return ApiResponse.onSuccess(result);
     }
@@ -50,6 +51,8 @@ public class UserContoller {
     public ApiResponse<UserDTO.UserLoginResponseDTO> createAuthenticationToken(
             @RequestBody @Valid UserDTO.UserLoginRequestDTO request
     ) throws Exception {
+        //TODO: 응답 내용에 토큰 만료 시각, 로그인 시각 추가
+
         // 인증 절차 수행
         this.authenticate(request.getNickName(), request.getPassword());
 

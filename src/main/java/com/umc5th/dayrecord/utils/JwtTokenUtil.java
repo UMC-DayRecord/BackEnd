@@ -29,6 +29,9 @@ public class JwtTokenUtil implements Serializable {
     @Value("${spring.jwt.secret}")
     private String secret;
 
+    @Value("${spring.jwt.issuer}")
+    private String issuer;
+
     // JWT 토큰으로부터 사용자 닉네임 추출
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -77,6 +80,7 @@ public class JwtTokenUtil implements Serializable {
 
         return Jwts.builder()
                 .setClaims(claims)
+                .setIssuer(issuer)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
