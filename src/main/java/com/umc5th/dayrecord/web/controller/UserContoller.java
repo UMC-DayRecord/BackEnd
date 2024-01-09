@@ -1,8 +1,14 @@
 package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
+import com.umc5th.dayrecord.converter.UserConverter;
+import com.umc5th.dayrecord.service.MailService;
 import com.umc5th.dayrecord.service.UserCommandService;
+import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.utils.JwtTokenUtil;
+import com.umc5th.dayrecord.web.dto.MailDTO;
 import com.umc5th.dayrecord.web.dto.UserDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +27,10 @@ import javax.validation.Valid;
 @CrossOrigin
 public class UserContoller {
     private final UserDetailsService userDetailsService;
-//    private final UserQueryService userQueryService;
+    private final UserQueryService userQueryService;
     private final UserCommandService userCommandService;
+    private final MailService mailService;
+
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
@@ -70,6 +78,35 @@ public class UserContoller {
                         .nickName(userDetails.getUsername())
                         .build()
         );
+    }
+
+    /**
+     * 이메일 주소를 입력받아 사용자 닉네임 찾기, 이메일로 해당 사용자의 닉네임을 보냄
+     * @param request UserDTO.FindMyIdRequestDTO
+     * @return ApiResponse
+     */
+    @PostMapping("/findmyid")
+    public ApiResponse<UserDTO.FindMyIdResponseDTO> findMyId(
+            @RequestBody @Valid UserDTO.FindMyIdRequestDTO request
+            ) {
+        // 해당 이메일 주소를 가진 사람이 있는가?
+        String nickName = userQueryService
+                .getUser(request.getEmail())
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND))
+                .getNickname();
+
+        // 찾은 사용자의 닉네임을 담은 이메일 보내기
+        MailDTO.MailSendRequestDTO mailSendRequest =
+                MailDTO.MailSendRequestDTO
+                        .builder()
+                        .title("DayRecord 아이디 찾기")
+                        .content("당신의 아이디는 \"" + nickName + "\" 입니다.")
+                        .targetAddress(request.getEmail())
+                        .build();
+
+        mailService.sendMessage(mailSendRequest);
+
+        return ApiResponse.onSuccess(UserDTO.FindMyIdResponseDTO.builder().nickName(nickName).build());
     }
 
 
