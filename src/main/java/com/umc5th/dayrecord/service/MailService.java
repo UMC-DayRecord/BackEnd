@@ -5,5 +5,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface MailService {
-    void sendMessage(MailDTO.MailSendRequestDTO request);
+    MailDTO.MailSendResponseDTO sendMessage(MailDTO.MailSendRequestDTO request);
 }

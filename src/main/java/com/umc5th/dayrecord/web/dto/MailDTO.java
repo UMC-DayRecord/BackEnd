@@ -8,7 +8,8 @@ public class MailDTO {
     @Builder
     @Getter
     @Setter
-    @RequiredArgsConstructor
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MailSendRequestDTO {
         private String title;
         private String content;
@@ -18,7 +19,8 @@ public class MailDTO {
     @Builder
     @Getter
     @Setter
-    @RequiredArgsConstructor
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MailSendResponseDTO {
         private LocalDateTime sentAt;
     }

@@ -7,6 +7,8 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 public class MailServiceImpl implements MailService {
     @Autowired
@@ -16,7 +18,7 @@ public class MailServiceImpl implements MailService {
     String address;
 
     @Override
-    public void sendMessage(MailDTO.MailSendRequestDTO request) {
+    public MailDTO.MailSendResponseDTO sendMessage(MailDTO.MailSendRequestDTO request) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(address);
         message.setTo(request.getTargetAddress());
@@ -24,5 +26,9 @@ public class MailServiceImpl implements MailService {
         message.setText(request.getContent());
 
         emailSender.send(message);
+        return MailDTO.MailSendResponseDTO
+                .builder()
+                .sentAt(LocalDateTime.now())
+                .build();
     }
 }
