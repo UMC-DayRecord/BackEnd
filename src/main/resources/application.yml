@@ -22,4 +22,4 @@ spring:
           auto: update
         default_batch_fetch_size: 1000
 server:
-  port: 8081
+  port: 8080
