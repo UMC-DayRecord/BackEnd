@@ -5,5 +5,5 @@ import org.springframework.data.domain.Slice;
 
 public interface PostQueryService {
 
-    Slice<Post> getPostList(Long userId, Integer page);
+    Slice<Post> getPostList(String nickname, Integer page);
 }

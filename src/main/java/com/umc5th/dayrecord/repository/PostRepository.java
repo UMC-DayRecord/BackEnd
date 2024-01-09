@@ -13,6 +13,6 @@ import java.util.List;
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-    @Query("SELECT p FROM Post p WHERE p.isPublic = true OR (p.user.id = :userId)")
-    Slice<Post> findByPost(@Param("userId") Long userId, PageRequest pageRequest);
+    @Query("SELECT p FROM Post p WHERE p.isPublic = true OR (p.user.nickname = :nickname)")
+    Slice<Post> findByPost(@Param("nickname") String nickname, PageRequest pageRequest);
 }

@@ -17,11 +17,11 @@ public class StreamPublicController {
 
     private final PostQueryService postQueryService;
 
-    @GetMapping("/{userId}")
-    public ApiResponse<PostDTO.postListDTO> getPostList(@PathVariable(name = "userId") Long userId,
+    @GetMapping("/{nickname}")
+    public ApiResponse<PostDTO.postListDTO> getPostList(@PathVariable(name = "nickname") String nickname,
                                                         @RequestParam(name = "page") Integer page) {
 
-        Slice<Post> postList = postQueryService.getPostList(userId, page);
+        Slice<Post> postList = postQueryService.getPostList(nickname, page);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList));
     }
 }
