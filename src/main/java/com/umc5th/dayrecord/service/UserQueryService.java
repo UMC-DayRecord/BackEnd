@@ -9,7 +9,5 @@ public interface UserQueryService {
     boolean isDuplicatePhoneNumber(String phoneNumber);
     boolean isDuplicateNickName(String nickName);
 
-    Optional<User> getUser(String email, String nickName);
-
-    Optional<User> getUser(String email);
+    Optional<User> getUser(String email, String name);
 }

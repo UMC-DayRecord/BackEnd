@@ -91,20 +91,19 @@ public class UserContoller {
             ) {
         // 해당 이메일 주소를 가진 사람이 있는가?
         String nickName = userQueryService
-                .getUser(request.getEmail())
+                .getUser(request.getEmail(), request.getName())
                 .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND))
                 .getNickname();
 
         // 찾은 사용자의 닉네임을 담은 이메일 보내기
-        MailDTO.MailSendRequestDTO mailSendRequest =
-                MailDTO.MailSendRequestDTO
-                        .builder()
-                        .title("DayRecord 아이디 찾기")
-                        .content("당신의 아이디는 \"" + nickName + "\" 입니다.")
-                        .targetAddress(request.getEmail())
-                        .build();
-
-        mailService.sendMessage(mailSendRequest);
+//        MailDTO.MailSendRequestDTO mailSendRequest =
+//                MailDTO.MailSendRequestDTO
+//                        .builder()
+//                        .title("DayRecord 아이디 찾기")
+//                        .content("당신의 아이디는 \"" + nickName + "\" 입니다.")
+//                        .targetAddress(request.getEmail())
+//                        .build();
+//        mailService.sendMessage(mailSendRequest);
 
         return ApiResponse.onSuccess(UserDTO.FindMyIdResponseDTO.builder().nickName(nickName).build());
     }
