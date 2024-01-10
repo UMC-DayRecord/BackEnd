@@ -21,5 +21,11 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
+  mail:
+    username: user
+    password: password
+    protocol: smtp
+    port: 465
+
 server:
   port: 8080
