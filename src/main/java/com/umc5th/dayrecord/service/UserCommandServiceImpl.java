@@ -7,7 +7,7 @@ import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.UserRepository;
 import com.umc5th.dayrecord.web.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -16,7 +16,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserCommandServiceImpl implements UserCommandService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PasswordEncoder passwordEncoder;
     private final UserQueryService userQueryService;
 
     public UserDTO.UserRegisterResponseDTO register(UserDTO.UserRegisterRequestDTO request) {
@@ -26,7 +26,7 @@ public class UserCommandServiceImpl implements UserCommandService {
         if(userQueryService.isDuplicateNickName(request.getNickName())) throw new RegisterHandler(ErrorStatus._NICKNAME_DUPLICATE);
 
         // 비밀번호 암호화 진행
-        request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
 
         Optional<User> result =  Optional.of(userRepository.save(UserConverter.RegisterRequestToUser(request)));
         return UserConverter.UserToResponse(result.get());
