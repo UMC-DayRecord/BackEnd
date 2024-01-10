@@ -19,7 +19,13 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _PHONE_NUMBER_DUPLICATE(HttpStatus.BAD_REQUEST, "REGISTER401", "이미 등록된 전화번호입니다."),
     _EMAIL_DUPLICATE(HttpStatus.BAD_REQUEST, "REGISTER402", "이미 등록된 이메일 주소입니다."),
-    _NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "REGISTER403", "이미 등록된 닉네임입니다.")
+    _NICKNAME_DUPLICATE(HttpStatus.BAD_REQUEST, "REGISTER403", "이미 등록된 닉네임입니다."),
+
+    // User Error
+    _USER_NOT_FOUNT(HttpStatus.NOT_FOUND, "USER401", "존재하지 않는 사용자입니다."),
+
+    // Page Error
+    _PAGE_BAD_REQUEST(HttpStatus.BAD_REQUEST, "PAGE401", "옳지 않은 페이지 번호입니다.")
     ;
 
 

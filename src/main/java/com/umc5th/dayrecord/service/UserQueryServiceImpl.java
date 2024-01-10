@@ -22,4 +22,8 @@ public class UserQueryServiceImpl implements UserQueryService {
         return userRepository.existsUserByNickname(nickName);
     }
 
+    public boolean existId(Long userId) {
+        return userRepository.existsUserById(userId);
+    }
+
 }
