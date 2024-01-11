@@ -27,6 +27,7 @@ public class PostDTO {
     public static class postListDTO {
         private List<postDTO> postList;
         private Integer listSize; // 페이지 크기
+        private Boolean hasNext; // 다음 페이지 여부
         private Boolean isFirst; // 첫 번째 페이지인지 여부
         private Boolean isLast; // 마지막 페이지인지 여부
     }
