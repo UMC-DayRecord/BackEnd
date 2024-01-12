@@ -23,7 +23,12 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
 
-    _LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401", "아이디 또는 비밀번호가 맞지 않습니다.")
+    _LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401", "아이디 또는 비밀번호가 맞지 않습니다."),
+
+    _VERIFICATION_BAD_REQUEST(HttpStatus.BAD_REQUEST, "VERIFICATION400", "잘못된 인증 코드입니다."),
+    _VERIFICATION_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "VERIFICATION404", "인증 정보가 없습니다."),
+    _VERIFICATION_REQUEST_TIMED_OUT(HttpStatus.REQUEST_TIMEOUT, "VERIFICATION408", "인증 요청이 만료되었습니다."),
+    _VERIFICATION_REQUEST_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "VERIFICATION401", "이 인증은 완료되지 않았습니다."),
     ;
 
 
