@@ -1,6 +1,7 @@
 package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
+import com.umc5th.dayrecord.converter.VerificationConverter;
 import com.umc5th.dayrecord.service.VerificationService;
 import com.umc5th.dayrecord.web.dto.VerificationDTO;
 import lombok.AccessLevel;
@@ -25,7 +26,7 @@ public class VerificationController {
      */
     @PostMapping("/nickname-exists")
     public ApiResponse<VerificationDTO.ExistsResponseDTO> nickNameExists(@RequestBody
-    @Valid VerificationDTO.NickNameExistsRequestDTO request) {
+    @Valid VerificationDTO.NickNameRequestDTO request) {
         boolean result = verificationService.existsNickName(request.getNickName());
 
         return ApiResponse.onSuccess(VerificationDTO.ExistsResponseDTO.builder()
@@ -40,7 +41,7 @@ public class VerificationController {
      */
     @PostMapping("/email-exists")
     public ApiResponse<VerificationDTO.ExistsResponseDTO> emailExists(
-            @RequestBody @Valid VerificationDTO.EmailExistsRequestDTO request
+            @RequestBody @Valid VerificationDTO.EmailRequestDTO request
     ) {
         boolean result = verificationService.existsEmail(request.getEmail());
 
@@ -48,4 +49,28 @@ public class VerificationController {
                 .isExists(result)
                 .build());
     }
+
+    /**
+     * 이메일 인증 토큰을 발급합니다. 토큰의 유효 시간은 10분입니다.
+     * 여기서 발행한 토큰은 인증 번호와 합께 /verify-email로 전송되어야 합니다.
+     * /verify-email에서는 여기서 발행했던 토큰을 검증하여 인증을 완료합니다.
+     * @param request VerificationDTO.EmailRequestDTO
+     * @return ApiResponse
+     */
+    @PostMapping("/email-verification-request")
+    public ApiResponse<VerificationDTO.EmailCodeVerificationReqResponseDTO> emailVerificationRequest(
+            @RequestBody @Valid VerificationDTO.EmailRequestDTO request
+    ) {
+
+        VerificationDTO.EmailCodeVerificationReqResponseDTO result =
+                // Verification 엔티티 -> responseDTO
+                VerificationConverter.VerificationToResponse(
+                        // Verification 등록 메서드
+                        verificationService.emailCodeVerificationRequest(
+                                request.getEmail()
+                        )
+                );
+        return ApiResponse.onSuccess(result);
+    }
+
 }

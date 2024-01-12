@@ -8,6 +8,8 @@ import com.umc5th.dayrecord.repository.VerificationRepository;
 import com.umc5th.dayrecord.utils.JwtTokenUtil;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,9 @@ public class VerificationServiceImpl implements VerificationService {
     private final UserRepository userRepository;
     private final VerificationRepository verificationRepository;
     private final JwtTokenUtil jwtTokenUtil;
+
+    protected final Log logger = LogFactory.getLog(this.getClass());
+
 
     /**
      * 입력받은 이메일 주소가 DB에 존재하는지 확인합니다.
@@ -45,7 +50,7 @@ public class VerificationServiceImpl implements VerificationService {
      * Verification 엔티티에 토큰과 만료일, 인증 성공 여부를 넣고, 토큰을 반환
      *
      */
-    public String emailCodeVerificationRequest(String email) {
+    public Verification emailCodeVerificationRequest(String email) {
         String token = jwtTokenUtil.generateToken();
 
         Verification v = Verification.builder()
@@ -55,10 +60,9 @@ public class VerificationServiceImpl implements VerificationService {
 
         // TODO: 이메일로 인증 코드 보내기
 
-
         verificationRepository.save(v);
-
-        return token;
+        logger.info("Verification code is: " + v.getCode());
+        return v;
     }
 
     /**
@@ -67,7 +71,7 @@ public class VerificationServiceImpl implements VerificationService {
      * @param code 인증 번호
      * @return 인증 절차 성공 여부
      */
-    public boolean emailCodeverificate(String token, String code) {
+    public boolean emailCodeVerificate(String token, String code) {
         Verification v = verificationRepository
                 .findVerificationByToken(token)
                 .orElseThrow(() -> new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_NOT_FOUND));
