@@ -55,7 +55,6 @@ public class VerificationServiceImpl implements VerificationService {
 
         Verification v = Verification.builder()
                 .token(token)
-//                .code("123456")     for debugging
                 .build();
 
         // TODO: 이메일로 인증 코드 보내기
@@ -86,7 +85,7 @@ public class VerificationServiceImpl implements VerificationService {
 
         // 코드 값이 맞는지 확인
         if(!v.getCode().equals(code)) {
-            verificationRepository.delete(v);
+//            verificationRepository.delete(v);
             throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_UNAUTHORIZED);
         }
 

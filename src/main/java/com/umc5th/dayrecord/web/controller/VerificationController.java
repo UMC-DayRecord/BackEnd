@@ -73,4 +73,20 @@ public class VerificationController {
         return ApiResponse.onSuccess(result);
     }
 
+
+    @PostMapping("/verify-email")
+    public ApiResponse<VerificationDTO.EmailCodeVerificationResponseDTO> verifyEmail(
+            @RequestBody @Valid VerificationDTO.EmailCodeVerificationRequestDTO request
+    ) {
+        boolean verified = verificationService.emailCodeVerificate(request.getToken(), request.getCode());
+
+        VerificationDTO.EmailCodeVerificationResponseDTO result =
+                VerificationDTO.EmailCodeVerificationResponseDTO
+                .builder()
+                .verified(verified)
+                .token(request.getToken())
+                .build();
+
+        return ApiResponse.onSuccess(result);
+    }
 }
