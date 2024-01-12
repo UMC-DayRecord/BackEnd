@@ -31,7 +31,7 @@ public class PostConverter {
 
         return PostDTO.postListDTO.builder()
                 .postList(postDTOList)
-                .listSize(postList.getContent().size())
+                .listSize(postList.getNumberOfElements())
                 .hasNext(postList.hasNext())
                 .isFirst(postList.isFirst())
                 .isLast(postList.isLast())

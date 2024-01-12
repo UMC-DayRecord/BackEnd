@@ -20,6 +20,7 @@ public class User extends BaseEntity {
     @Column(length = 20, nullable = false)
     private String name;
 
+    //TODO: updatable = false 속성 추가
     @Column(length = 20, unique = true, nullable = false)
     private String nickname;
 
@@ -58,5 +59,4 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comment;
-
 }
