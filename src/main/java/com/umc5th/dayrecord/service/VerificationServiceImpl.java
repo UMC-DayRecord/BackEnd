@@ -6,6 +6,7 @@ import com.umc5th.dayrecord.domain.Verification;
 import com.umc5th.dayrecord.repository.UserRepository;
 import com.umc5th.dayrecord.repository.VerificationRepository;
 import com.umc5th.dayrecord.utils.JwtTokenUtil;
+import com.umc5th.dayrecord.web.dto.MailDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.logging.Log;
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 public class VerificationServiceImpl implements VerificationService {
     private final UserRepository userRepository;
     private final VerificationRepository verificationRepository;
+    private final MailService mailService;
     private final JwtTokenUtil jwtTokenUtil;
 
     protected final Log logger = LogFactory.getLog(this.getClass());
@@ -57,10 +59,20 @@ public class VerificationServiceImpl implements VerificationService {
                 .token(token)
                 .build();
 
-        // TODO: 이메일로 인증 코드 보내기
+        mailService.sendMessage(
+                MailDTO.MailSendRequestDTO.builder()
+                        .title("DayRecord 이메일 인증")
+                        .content(
+                                "DayRecord\n" +
+                                "인증 번호는 \"" + v.getCode() + "\" 입니다.\n" +
+                                "시간 내에 입력해 주세요.\n"
+                        )
+                        .targetAddress(email)
+                        .build()
+                );
 
         verificationRepository.save(v);
-        logger.info("Verification code is: " + v.getCode());
+        logger.debug("Verification code is: " + v.getCode());
         return v;
     }
 
