@@ -24,7 +24,7 @@ public class UserExistsValidator implements ConstraintValidator<ExistUser, Long>
     public boolean isValid(Long value, ConstraintValidatorContext context) {
         if (!userQueryService.existId(value)){
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus._USER_NOT_FOUNT.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus._USER_NOT_FOUND.toString()).addConstraintViolation();
             return false;
         }
         return true;
