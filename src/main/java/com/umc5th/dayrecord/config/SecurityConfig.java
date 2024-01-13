@@ -45,7 +45,8 @@ public class SecurityConfig {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(requests -> requests
-                    .antMatchers("/", "/users/login", "/users", "/users/findmyid").permitAll()
+                    .antMatchers("/**", "/*").permitAll()
+//                            , "/users/login", "/users", "/users/findmyid").permitAll()
                     .anyRequest()
                     .authenticated()
             )

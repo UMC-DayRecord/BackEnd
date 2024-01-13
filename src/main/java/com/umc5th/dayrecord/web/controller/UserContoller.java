@@ -9,8 +9,6 @@ import com.umc5th.dayrecord.utils.JwtTokenUtil;
 import com.umc5th.dayrecord.web.dto.UserDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,8 +27,6 @@ public class UserContoller {
 
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
-
-    protected final Log logger = LogFactory.getLog(this.getClass());
 
     /**
      * 사용자 회원 가입
@@ -109,7 +105,6 @@ public class UserContoller {
      * @param password 비밀번호
      */
     private void authenticate(String username, String password) {
-        logger.info("authenticate");
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (Exception e) {
