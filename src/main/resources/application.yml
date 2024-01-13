@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/prtest
-    username: root
-    password: rootdb2457
+    url:
+    username:
+    password:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jwt:
     secret:

@@ -10,8 +10,11 @@ import java.util.stream.Collectors;
 
 public class PostConverter {
 
-    public static PostDTO.postDTO fetchPost(Post post) {
-        return PostDTO.postDTO.builder()
+    public static PostDTO.postSummaryDTO fetchPost(Post post, Long userId) {
+        boolean like_check = post.getLikesList().stream()
+                .anyMatch(like -> like != null && like.getUser().getId().equals(userId));
+
+        return PostDTO.postSummaryDTO.builder()
                 .postId(post.getId())
                 .nickname(post.getUser().getNickname())
                 .postImg(post.getPostPhotoList().stream()
@@ -19,17 +22,18 @@ public class PostConverter {
                         .limit(3) // 최대 3개까지만 가져오기
                         .collect(Collectors.toList()))
                 .likes(Long.valueOf(post.getLikesList().size()))
+                .isLike(like_check)
                 .comments(Long.valueOf(post.getCommentList().size()))
                 .createdAt(post.getCreatedAt())
                 .build();
     }
 
-    public static PostDTO.postListDTO responsePost(Slice<Post> postList) {
-        List<PostDTO.postDTO> postDTOList = postList.stream()
-                .map(PostConverter::fetchPost)
+    public static PostDTO.postSummaryListDTO responsePost(Slice<Post> postList, Long userId) {
+        List<PostDTO.postSummaryDTO> postDTOList = postList.stream()
+                .map((Post post) -> fetchPost(post, userId))
                 .collect(Collectors.toList());
 
-        return PostDTO.postListDTO.builder()
+        return PostDTO.postSummaryListDTO.builder()
                 .postList(postDTOList)
                 .listSize(postList.getNumberOfElements())
                 .hasNext(postList.hasNext())

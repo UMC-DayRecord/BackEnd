@@ -22,10 +22,10 @@ public class StreamPublicController {
     private final PostQueryService postQueryService;
 
     @GetMapping("/{userId}")
-    public ApiResponse<PostDTO.postListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
+    public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
                                                         @CheckPage @RequestParam(name = "page") Integer page) {
 
         Slice<Post> postList = postQueryService.getPostList(userId, page-1);
-        return ApiResponse.onSuccess(PostConverter.responsePost(postList));
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
 }

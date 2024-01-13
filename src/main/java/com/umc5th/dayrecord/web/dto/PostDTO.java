@@ -11,11 +11,12 @@ public class PostDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class postDTO {
+    public static class postSummaryDTO {
         private Long postId;
         private String nickname;
         private List<String> postImg;
         private Long likes;
+        private Boolean isLike;
         private Long comments;
         private LocalDateTime createdAt;
     }
@@ -24,12 +25,11 @@ public class PostDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class postListDTO {
-        private List<postDTO> postList;
+    public static class postSummaryListDTO {
+        private List<postSummaryDTO> postList;
         private Integer listSize; // 페이지 크기
         private Boolean hasNext; // 다음 페이지 여부
         private Boolean isFirst; // 첫 번째 페이지인지 여부
         private Boolean isLast; // 마지막 페이지인지 여부
     }
-
 }
