@@ -89,6 +89,12 @@ public class VerificationServiceImpl implements VerificationService {
             throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_UNAUTHORIZED);
         }
 
+        // 이미 인증 성공한 요청인 경우
+        if(v.getIsSuccess()) {
+            logger.info("verification request for token \"" + v.getToken() + "\" is already processed.");
+            return true;
+        }
+
         //인증 성공(토큰에 맞는 인증을 찾음 and 만료되지 않음 and 코드 값 일치) Verification.isSuccess -> true
         v.setIsSuccess(true);
         verificationRepository.save(v);

@@ -74,6 +74,15 @@ public class VerificationController {
     }
 
 
+    /**
+     * /email-verification-request에서 발급한 이메일 인증 토큰을, 인증 번호로 검증합니다.
+     * 토큰의 유효 시간 10분 이내에 인증이 완료되어야 하며, 유효 시간이 경과한 토큰으로 검증을 시도하면
+     * 해당 토큰은 DB에서 삭제되며 인증을 처음부터 다시 시작해야 합니다.
+     *
+     *
+     * @param request 인증 토큰과 인증 번호
+     * @return 인증 성공 여부
+     */
     @PostMapping("/verify-email")
     public ApiResponse<VerificationDTO.EmailCodeVerificationResponseDTO> verifyEmail(
             @RequestBody @Valid VerificationDTO.EmailCodeVerificationRequestDTO request
