@@ -57,6 +57,7 @@ public class VerificationServiceImpl implements VerificationService {
 
         Verification v = Verification.builder()
                 .token(token)
+//                .expireAt(LocalDateTime.now().plusMinutes(1)) // for debugging
                 .build();
 
         mailService.sendMessage(
