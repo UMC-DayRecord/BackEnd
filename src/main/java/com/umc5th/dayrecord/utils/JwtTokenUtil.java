@@ -2,9 +2,8 @@ package com.umc5th.dayrecord.utils;
 
 import java.io.Serializable;
 import java.security.Key;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.SecureRandom;
+import java.util.*;
 import java.util.function.Function;
 
 import io.jsonwebtoken.security.Keys;
@@ -22,6 +21,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
  */
 @Component
 public class JwtTokenUtil implements Serializable {
+    private final SecureRandom secureRandom = new SecureRandom();
+    private final Base64.Encoder base64Coder = Base64.getUrlEncoder();
+
     private static final long serialVersionUID = -2550185165626007488L;
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
@@ -64,11 +66,29 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    // 새 토큰 발급
+    /**
+     * UserDetails로부터 임의의 JWT 토큰을 생성합니다.
+     * @param userDetails 대상 UserDetails
+     * @return JWT 토큰
+     */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         return doGenerateToken(claims, userDetails.getUsername());
     }
+
+
+    /**
+     * 임의 문자열로 된 토큰을 반환합니다. JWT 토큰이 아닙니다.
+     * @return 임의 문자열로 된 토큰
+     */
+    public String generateToken() {
+        byte[] randomBytes = new byte[20];
+        secureRandom.nextBytes(randomBytes);
+
+        return base64Coder.encodeToString(randomBytes);
+    }
+
+
 
     //while creating the token -
     //1. Define  claims of the token, like Issuer, Expiration, Subject, and the ID
