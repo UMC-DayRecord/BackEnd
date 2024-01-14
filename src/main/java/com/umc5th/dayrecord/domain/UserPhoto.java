@@ -15,6 +15,7 @@ public class UserPhoto extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 65535, columnDefinition = "TEXT")
     private String url;
 
     @OneToOne(fetch = FetchType.LAZY)
