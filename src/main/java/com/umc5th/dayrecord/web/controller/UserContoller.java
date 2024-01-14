@@ -39,6 +39,13 @@ public class UserContoller {
     @PostMapping("")
     public ApiResponse<UserDTO.UserRegisterResponseDTO> register(
             @RequestBody @Valid UserDTO.UserRegisterRequestDTO request) {
+        // 이메일 인증 여부 검사
+        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
+            // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
+            // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
+            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
+        }
+
         UserDTO.UserRegisterResponseDTO result = userCommandService.register(request);
         return ApiResponse.onSuccess(result);
     }
