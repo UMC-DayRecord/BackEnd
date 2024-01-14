@@ -32,4 +32,9 @@ public class UserQueryServiceImpl implements UserQueryService {
     public Optional<User> getUser(String email, String name) {
         return userRepository.getUserByEmailAndName(email, name);
     }
+
+    @Override
+    public boolean existId(Long userId) {
+        return userRepository.existsUserById(userId);
+    }
 }
