@@ -53,5 +53,6 @@ public class PostConverter {
                 .likes(Long.valueOf(post.getLikesList().size()))
                 .comments(Long.valueOf(post.getCommentList().size()))
                 .createdAt(post.getCreatedAt())
+                .build();
     }
 }

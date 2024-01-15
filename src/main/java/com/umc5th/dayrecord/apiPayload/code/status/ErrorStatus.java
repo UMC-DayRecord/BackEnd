@@ -36,6 +36,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _JWT_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "LOGIN4000", "JWT 토큰의 유효 기간이 경과했습니다."),
     _JWT_TOKEN_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "LOGIN4001", "JWT 토큰 검증에 실패했습니다."),
+
+    _POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "POST404", "일기를 찾을 수 없습니다."),
     ;
 
 

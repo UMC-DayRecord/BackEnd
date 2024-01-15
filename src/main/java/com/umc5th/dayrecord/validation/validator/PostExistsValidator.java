@@ -24,7 +24,7 @@ private final PostQueryService postQueryService;
     public boolean isValid(Long value, ConstraintValidatorContext context) {
         if (!postQueryService.existById(value)){
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus._USER_NOT_FOUND.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus._POST_NOT_FOUNT.toString()).addConstraintViolation();
             return false;
         }
         return true;
