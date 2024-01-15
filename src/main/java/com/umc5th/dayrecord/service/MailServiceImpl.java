@@ -21,19 +21,19 @@ public class MailServiceImpl implements MailService {
 
     @Override
     public MailDTO.MailSendResponseDTO sendMessage(MailDTO.MailSendRequestDTO request) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom(address);
-        message.setTo(request.getTargetAddress());
-        message.setSubject(request.getTitle());
-        message.setText(request.getContent());
-
-        try {
-            emailSender.send(message);
-        }
-        catch(Exception e) {
-            // 이메일 전송이 실패한 경우
-            throw new EmailHandler(ErrorStatus._VERIFICATION_REQUEST_EMAIL_SEND_FAILED);
-        }
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setFrom(address);
+//        message.setTo(request.getTargetAddress());
+//        message.setSubject(request.getTitle());
+//        message.setText(request.getContent());
+//
+//        try {
+//            emailSender.send(message);
+//        }
+//        catch(Exception e) {
+//            // 이메일 전송이 실패한 경우
+//            throw new EmailHandler(ErrorStatus._VERIFICATION_REQUEST_EMAIL_SEND_FAILED);
+//        }
         return MailDTO.MailSendResponseDTO
                 .builder()
                 .sentAt(LocalDateTime.now())

@@ -39,12 +39,13 @@ public class UserContoller {
     @PostMapping("")
     public ApiResponse<UserDTO.UserRegisterResponseDTO> register(
             @RequestBody @Valid UserDTO.UserRegisterRequestDTO request) {
+        // TODO: 디버그 기능 제거
         // 이메일 인증 여부 검사
-        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
-            // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
-            // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
-            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
-        }
+//        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
+//            // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
+//            // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
+//            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
+//        }
 
         UserDTO.UserRegisterResponseDTO result = userCommandService.register(request);
         return ApiResponse.onSuccess(result);
@@ -89,12 +90,13 @@ public class UserContoller {
     public ApiResponse<UserDTO.FindMyIdResponseDTO> findMyId(
             @RequestBody @Valid UserDTO.FindMyIdRequestDTO request
             ) {
+        // TODO: 디버그 기능 제거
         // 이메일 인증 여부 검사
-        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
+//        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
             // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
             // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
-            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
-        }
+//            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
+//        }
 
         // 해당 이메일 주소를 가진 사람이 있는가?
         String nickName = userQueryService
@@ -127,12 +129,13 @@ public class UserContoller {
     ) {
         // TODO: 로그인 토큰 유효성 검사
 
+        // TODO: 디버그 기능 제거
         // 이메일 인증 여부 검사
-        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
-            // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
-            // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
-            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
-        }
+//        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
+//            // 인증이 되지 않았다면 서비스 단에서 핸들링 됨
+//            // 인증이 되지 않았는데 여기로 넘어온다면 문제가 있는 상황임
+//            throw new VerificationHandler(ErrorStatus._INTERNAL_SERVER_ERROR);
+//        }
 
         // 모든 토큰이 유효하면 비밀번호 변경 진행
         boolean result = userCommandService.changePassword(request);
