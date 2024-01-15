@@ -46,6 +46,13 @@ public class VerificationServiceImpl implements VerificationService {
     }
 
 
+    /**
+     *
+     */
+    public boolean existsUser(String name, String nickName, String email) {
+        return userRepository.existsUserByNameAndNicknameAndEmail(name, nickName, email);
+    }
+
 
     /**
      * 이메일 인증 요청

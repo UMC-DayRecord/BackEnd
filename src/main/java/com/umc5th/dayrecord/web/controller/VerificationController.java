@@ -50,6 +50,27 @@ public class VerificationController {
                 .build());
     }
 
+
+    /**
+     * 사용자가 DB에 존재하는지 확인합니다. 이름, 닉네임, 이메일 주소를 입력으로 받습니다.
+     * @param request VerificationDTO.NickNameVerificationRequestDTO
+     * @return ApiResponse
+     */
+    @PostMapping("/user-exists")
+    public ApiResponse<VerificationDTO.ExistsResponseDTO> nickNameExists(@RequestBody
+     @Valid VerificationDTO.UserExistsRequestDTO request) {
+        boolean result = verificationService.existsUser(
+                request.getName(),
+                request.getNickName(),
+                request.getEmail()
+        );
+
+        return ApiResponse.onSuccess(VerificationDTO.ExistsResponseDTO.builder()
+                .isExists(result)
+                .build());
+    }
+
+
     /**
      * 이메일 인증 토큰을 발급합니다. 토큰의 유효 시간은 10분입니다.
      * 여기서 발행한 토큰은 인증 번호와 합께 /verify-email로 전송되어야 합니다.
