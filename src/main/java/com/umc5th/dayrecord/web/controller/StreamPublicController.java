@@ -28,4 +28,9 @@ public class StreamPublicController {
         Slice<Post> postList = postQueryService.getPostList(userId, page-1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
+
+    @GetMapping("/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@PathVariable(name = "postId") Long postId) {
+        return null;
+    }
 }
