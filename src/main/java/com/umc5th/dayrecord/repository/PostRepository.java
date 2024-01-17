@@ -13,6 +13,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @Query("SELECT p FROM Post p WHERE p.isPublic = true AND (p.user.id <> :userId)")
     Slice<Post> findByPost(@Param("userId") Long userId, PageRequest pageRequest);
-
-    boolean existsById(Long postId);
 }
