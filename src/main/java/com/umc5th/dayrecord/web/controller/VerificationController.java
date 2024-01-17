@@ -2,6 +2,7 @@ package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.converter.VerificationConverter;
+import com.umc5th.dayrecord.domain.Verification;
 import com.umc5th.dayrecord.service.VerificationService;
 import com.umc5th.dayrecord.web.dto.VerificationDTO;
 import lombok.AccessLevel;
@@ -50,6 +51,24 @@ public class VerificationController {
                 .build());
     }
 
+
+    /**
+     * 이메일, 사용자 이름, 닉네임을 가진 사용자가 DB에 존재하는지 확인합니다.
+     * @param request VerificationDTO.EmailExistsRequestDTO
+     * @return ApiResponse
+     */
+    @PostMapping("/user-exists")
+    public ApiResponse<VerificationDTO.ExistsResponseDTO> userExists(
+            @RequestBody @Valid VerificationDTO.UserRequestDTO request
+    ) {
+        boolean result = verificationService.existsNickName(request.getNickName());
+
+        return ApiResponse.onSuccess(
+                VerificationDTO.ExistsResponseDTO.builder()
+                        .isExists(result)
+                        .build());
+    }
+
     /**
      * 이메일 인증 토큰을 발급합니다. 토큰의 유효 시간은 10분입니다.
      * 여기서 발행한 토큰은 인증 번호와 합께 /verify-email로 전송되어야 합니다.
@@ -62,14 +81,17 @@ public class VerificationController {
             @RequestBody @Valid VerificationDTO.EmailRequestDTO request
     ) {
 
+        // Verification 등록 메서드
+        Verification v = verificationService.emailCodeVerificationRequest(request.getEmail());
+
+        // Verification 엔티티 -> responseDTO
         VerificationDTO.EmailCodeVerificationReqResponseDTO result =
-                // Verification 엔티티 -> responseDTO
-                VerificationConverter.VerificationToResponse(
-                        // Verification 등록 메서드
-                        verificationService.emailCodeVerificationRequest(
-                                request.getEmail()
-                        )
-                );
+        VerificationConverter.VerificationToResponse(v);
+
+        // for debugging: 인증 번호도 포함해서 보내
+        // TODO: 디버그 기능 삭제
+        result.setCode(v.getCode());
+
         return ApiResponse.onSuccess(result);
     }
 
@@ -98,4 +120,6 @@ public class VerificationController {
 
         return ApiResponse.onSuccess(result);
     }
+
+
 }

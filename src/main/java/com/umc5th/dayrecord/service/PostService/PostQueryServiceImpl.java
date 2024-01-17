@@ -26,4 +26,14 @@ public class PostQueryServiceImpl implements PostQueryService {
         Slice<Post> postList = postRepository.findBySearchPost(userId, query, PageRequest.of(page, 3));
         return postList;
     }
+
+    public Post getPostDetailInfo(Long postId) {
+        Post post = postRepository.findById(postId).get();
+        return post;
+    }
+
+    @Override
+    public Boolean existById(Long postId) {
+        return postRepository.existsById(postId);
+    }
 }

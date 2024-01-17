@@ -33,8 +33,13 @@ public enum ErrorStatus implements BaseErrorCode {
     _VERIFICATION_BAD_REQUEST(HttpStatus.BAD_REQUEST, "VERIFICATION400", "잘못된 인증 코드입니다."),
     _VERIFICATION_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "VERIFICATION404", "인증 정보가 없습니다."),
     _VERIFICATION_REQUEST_TIMED_OUT(HttpStatus.REQUEST_TIMEOUT, "VERIFICATION408", "인증 요청이 만료되었습니다."),
-    _VERIFICATION_REQUEST_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "VERIFICATION401", "인증 번호가 틀렸습니다."),
+    _VERIFICATION_REQUEST_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "VERIFICATION401", "인증이 아직 완료되지 않았거나, 인증 번호가 틀렸습니다."),
     _VERIFICATION_REQUEST_EMAIL_SEND_FAILED(HttpStatus.BAD_REQUEST, "VERIFICATION409", "이메일 전송에 실패했습니다. 이메일 주소가 올바른지 확인하세요."),
+
+    _JWT_TOKEN_EXPIRED(HttpStatus.BAD_REQUEST, "LOGIN4000", "JWT 토큰의 유효 기간이 경과했습니다."),
+    _JWT_TOKEN_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "LOGIN4001", "JWT 토큰 검증에 실패했습니다."),
+
+    _POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "POST404", "일기를 찾을 수 없습니다."),
     ;
 
 

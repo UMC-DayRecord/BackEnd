@@ -32,4 +32,19 @@ public class PostDTO {
         private Boolean isFirst; // 첫 번째 페이지인지 여부
         private Boolean isLast; // 마지막 페이지인지 여부
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class postDetailDTO {
+        private Long postId;
+        private String streamName;
+        private List<String> postImg;
+        private String detail;
+        private Long likes;
+        private Long comments;
+        private Boolean isPublic;
+        private LocalDateTime createdAt;
+    }
 }

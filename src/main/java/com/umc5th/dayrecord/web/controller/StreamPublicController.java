@@ -6,6 +6,7 @@ import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
+import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import lombok.AccessLevel;
@@ -34,7 +35,13 @@ public class StreamPublicController {
     public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
                                                                @CheckQuery @RequestParam(name = "query") String query,
                                                                @CheckPage @RequestParam(name = "page") Integer page) {
-        Slice<Post> postList = postQueryService.getSearchList(userId, query, page-1);
+        Slice<Post> postList = postQueryService.getSearchList(userId, query, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+    @GetMapping("/posts/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@ExistPost @PathVariable(name = "postId") Long postId) {
+        Post post = postQueryService.getPostDetailInfo(postId);
+        return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 }
