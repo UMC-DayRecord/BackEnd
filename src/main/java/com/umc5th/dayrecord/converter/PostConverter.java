@@ -52,6 +52,7 @@ public class PostConverter {
                 .detail(post.getDetail())
                 .likes(Long.valueOf(post.getLikesList().size()))
                 .comments(Long.valueOf(post.getCommentList().size()))
+                .isPublic(post.getIsPublic())
                 .createdAt(post.getCreatedAt())
                 .build();
     }

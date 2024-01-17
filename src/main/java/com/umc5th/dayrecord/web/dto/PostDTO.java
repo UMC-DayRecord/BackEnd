@@ -44,6 +44,7 @@ public class PostDTO {
         private String detail;
         private Long likes;
         private Long comments;
+        private Boolean isPublic;
         private LocalDateTime createdAt;
     }
 }
