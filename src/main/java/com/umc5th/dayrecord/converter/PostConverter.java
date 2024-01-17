@@ -41,4 +41,19 @@ public class PostConverter {
                 .isLast(postList.isLast())
                 .build();
     }
+
+    public static PostDTO.postDetailDTO detailPost(Post post) {
+        return PostDTO.postDetailDTO.builder()
+                .postId(post.getId())
+                .streamName(post.getStream().getStreamName())
+                .postImg(post.getPostPhotoList().stream()
+                        .map(PostPhoto::getUrl)
+                        .collect(Collectors.toList()))
+                .detail(post.getDetail())
+                .likes(Long.valueOf(post.getLikesList().size()))
+                .comments(Long.valueOf(post.getCommentList().size()))
+                .isPublic(post.getIsPublic())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
 }
