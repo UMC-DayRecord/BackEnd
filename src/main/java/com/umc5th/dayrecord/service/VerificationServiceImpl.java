@@ -45,6 +45,15 @@ public class VerificationServiceImpl implements VerificationService {
         return userRepository.existsUserByEmail(email);
     }
 
+    /**
+     * 입력받은 이메일 주소, 닉네임, 이름을 가진 사용자가 DB에 존재하는지 확인합니다.
+     * @param email VerificationDTO.UserRequestDTO
+     * @return 해당 이메일의 등록 여부
+     */
+    public boolean existsEmail(String email, String nickName, String name) {
+        return userRepository.existsUserByEmailAndNicknameAndName(email, nickName, name);
+    }
+
 
 
     /**
