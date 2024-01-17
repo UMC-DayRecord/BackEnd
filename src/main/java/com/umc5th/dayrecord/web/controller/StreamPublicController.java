@@ -5,6 +5,7 @@ import com.umc5th.dayrecord.converter.PostConverter;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
+import com.umc5th.dayrecord.validation.annotation.CheckQuery;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.PostDTO;
@@ -27,6 +28,14 @@ public class StreamPublicController {
                                                         @CheckPage @RequestParam(name = "page") Integer page) {
 
         Slice<Post> postList = postQueryService.getPostList(userId, page-1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+    @GetMapping("/search/{userId}")
+    public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                               @CheckQuery @RequestParam(name = "query") String query,
+                                                               @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = postQueryService.getSearchList(userId, query, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
 

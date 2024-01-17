@@ -22,6 +22,11 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
+    public Slice<Post> getSearchList(Long userId, String query, Integer page) {
+        Slice<Post> postList = postRepository.findBySearchPost(userId, query, PageRequest.of(page, 3));
+        return postList;
+    }
+
     public Post getPostDetailInfo(Long postId) {
         Post post = postRepository.findById(postId).get();
         return post;
