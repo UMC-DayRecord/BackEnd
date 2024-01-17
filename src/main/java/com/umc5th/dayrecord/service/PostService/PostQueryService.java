@@ -6,4 +6,8 @@ import org.springframework.data.domain.Slice;
 public interface PostQueryService {
 
     Slice<Post> getPostList(Long userId, Integer page);
+
+    Post getPostDetailInfo(Long postId);
+
+    Boolean existById(Long postId);
 }

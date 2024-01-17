@@ -35,9 +35,6 @@ public class UserQueryServiceImpl implements UserQueryService {
 
     @Override
     public boolean existId(Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isEmpty())
-            return false;
-        return true;
+        return userRepository.existsById(userId);
     }
 }
