@@ -35,8 +35,9 @@ public class StreamPublicController {
 
     @PostMapping("/{postId}/like/{userId}")
     public ApiResponse<LikesDTO.likeResponseDTO> likePost(@PathVariable(name = "postId") Long postId,
-                                                             @PathVariable(name = "userId") Long userId) {
-        Boolean isLike = likesCommandService.updateLikes(postId, userId);
+                                                          @ExistUser @PathVariable(name = "userId") Long userId) {
+        likesCommandService.updateLikes(postId, userId);
+        Boolean isLike = likesCommandService.likeCheck(postId, userId);
         Post post = postQueryService.getPost(postId);
         return ApiResponse.onSuccess(LikesConverter.likeResult(post, isLike));
     }
