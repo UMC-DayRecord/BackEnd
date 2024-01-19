@@ -35,15 +35,6 @@ public class StreamPublicController {
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
 
-    @PostMapping("/{postId}/like/{userId}")
-    public ApiResponse<LikesDTO.likeResponseDTO> likePost(@PathVariable(name = "postId") Long postId,
-                                                          @ExistUser @PathVariable(name = "userId") Long userId) {
-        likesCommandService.updateLikes(postId, userId);
-        Boolean isLike = likesCommandService.likeCheck(postId, userId);
-        Post post = postQueryService.getPost(postId);
-        return ApiResponse.onSuccess(LikesConverter.likeResult(post, isLike));
-    }
-
     @GetMapping("/search/{userId}")
     public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
                                                                @CheckQuery @RequestParam(name = "query") String query,
@@ -56,5 +47,14 @@ public class StreamPublicController {
     public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@ExistPost @PathVariable(name = "postId") Long postId) {
         Post post = postQueryService.getPostDetailInfo(postId);
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
+    }
+
+    @PostMapping("/{postId}/like/{userId}")
+    public ApiResponse<LikesDTO.likeResponseDTO> likePost(@ExistPost @PathVariable(name = "postId") Long postId,
+                                                          @ExistUser @PathVariable(name = "userId") Long userId) {
+        likesCommandService.updateLikes(postId, userId);
+        Boolean isLike = likesCommandService.likeCheck(postId, userId);
+        Post post = postQueryService.getPost(postId);
+        return ApiResponse.onSuccess(LikesConverter.likeResult(post, isLike));
     }
 }
