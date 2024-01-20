@@ -23,7 +23,7 @@ public class CommentController {
     private final CommentQueryService commentQueryService;
 
     @PostMapping("/{postId}")
-    public ApiResponse<CommentDTO.commentResponseDTO> writeComment(@PathVariable(name = "postId") Long postId,
+    public ApiResponse<CommentDTO.commentResponseDTO> postComment(@PathVariable(name = "postId") Long postId,
                                                                    CommentDTO.commentRequestDTO request) {
         return ApiResponse.onSuccess(commentCommandService.createComment(request, postId));
     }
@@ -32,5 +32,11 @@ public class CommentController {
     public ApiResponse<CommentDTO.commentListDTO> getCommentList(@PathVariable(name = "postId") Long postId) {
         List<Comment> commentList = commentQueryService.commentList(postId);
         return ApiResponse.onSuccess(CommentConverter.getComments(commentList));
+    }
+
+    @DeleteMapping("/{commentId}")
+    public ApiResponse<String> deleteComment(@PathVariable(name = "commentId") Long commentId) {
+        commentCommandService.removeComment(commentId);
+        return ApiResponse.onSuccess("성공했습니다.");
     }
 }

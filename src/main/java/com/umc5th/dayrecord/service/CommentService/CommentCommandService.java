@@ -6,4 +6,6 @@ import com.umc5th.dayrecord.web.dto.CommentDTO;
 public interface CommentCommandService {
 
     CommentDTO.commentResponseDTO createComment(CommentDTO.commentRequestDTO request, Long postId);
+
+    void removeComment(Long commentId);
 }

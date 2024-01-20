@@ -27,4 +27,10 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         Comment c = commentRepository.save(comment);
         return CommentConverter.responseComment(c);
     }
+
+    @Override
+    public void removeComment(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).get();
+        commentRepository.delete(comment);
+    }
 }
