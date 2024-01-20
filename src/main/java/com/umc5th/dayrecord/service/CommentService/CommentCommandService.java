@@ -8,4 +8,6 @@ public interface CommentCommandService {
     CommentDTO.commentResponseDTO createComment(CommentDTO.commentRequestDTO request, Long postId);
 
     void removeComment(Long commentId);
+
+    Comment updateComment(CommentDTO.editCommentRequestDTO request, Long commentId);
 }

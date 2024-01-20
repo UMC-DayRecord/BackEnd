@@ -35,4 +35,12 @@ public class CommentDTO {
         private List<commentResponseDTO> commentList;
         private Long listSize;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class editCommentRequestDTO {
+        private String editDetail;
+    }
+
 }

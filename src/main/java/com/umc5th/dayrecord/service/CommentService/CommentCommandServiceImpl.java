@@ -33,4 +33,11 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         Comment comment = commentRepository.findById(commentId).get();
         commentRepository.delete(comment);
     }
+
+    @Override
+    public Comment updateComment(CommentDTO.editCommentRequestDTO request, Long commentId) {
+        Comment comment = commentRepository.findById(commentId).get();
+        comment.update(request.getEditDetail());
+        return commentRepository.save(comment);
+    }
 }
