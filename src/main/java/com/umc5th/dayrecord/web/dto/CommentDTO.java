@@ -30,6 +30,7 @@ public class CommentDTO {
         private Long commentId;
         private String nickname;
         private String detail;
+        private Boolean isAuthor;
     }
 
     @Getter
@@ -42,9 +43,21 @@ public class CommentDTO {
     }
 
     @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class commentSizeDTO {
+        private Long commentSize;
+    }
+
+
+
+    @Getter
     @NoArgsConstructor
     @AllArgsConstructor
     public static class editCommentRequestDTO {
+        @ExistUser
+        private Long userId;
         @NotEmpty(message = "수정할 내용을 입력해 주세요.")
         private String editDetail;
     }

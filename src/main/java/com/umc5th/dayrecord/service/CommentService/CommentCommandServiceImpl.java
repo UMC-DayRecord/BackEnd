@@ -25,13 +25,15 @@ public class CommentCommandServiceImpl implements CommentCommandService {
         User user = userRepository.findById(request.getUserId()).get();
         Comment comment = CommentConverter.saveComment(request, post, user);
         Comment c = commentRepository.save(comment);
-        return CommentConverter.responseComment(c);
+        return CommentConverter.responseComment(c, request.getUserId());
     }
 
     @Override
-    public void removeComment(Long commentId) {
+    public Post removeComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).get();
+        Post post = comment.getPost();
         commentRepository.delete(comment);
+        return post;
     }
 
     @Override
