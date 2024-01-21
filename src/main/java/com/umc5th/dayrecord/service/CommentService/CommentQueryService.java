@@ -7,4 +7,6 @@ import java.util.List;
 public interface CommentQueryService {
 
     List<Comment> commentList(Long postId);
+
+    Boolean existById(Long commentId);
 }

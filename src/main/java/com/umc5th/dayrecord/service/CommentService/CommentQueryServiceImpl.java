@@ -22,4 +22,9 @@ public class CommentQueryServiceImpl implements CommentQueryService {
         List<Comment> comments = commentRepository.findAllByPost(post);
         return comments;
     }
+
+    @Override
+    public Boolean existById(Long commentId) {
+        return commentRepository.existsById(commentId);
+    }
 }
