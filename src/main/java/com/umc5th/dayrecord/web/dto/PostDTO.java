@@ -15,9 +15,10 @@ public class PostDTO {
         private Long postId;
         private String nickname;
         private List<String> postImg;
-        private Long likes;
-        private Boolean isLike;
-        private Long comments;
+        private Long likes; // 좋아요 수
+        private Boolean isLike; // 좋아요 클릭 여부
+        private Long comments; // 댓글 수
+        private Boolean isPublic; // 공개 여부
         private LocalDateTime createdAt;
     }
 
@@ -42,9 +43,9 @@ public class PostDTO {
         private String streamName;
         private List<String> postImg;
         private String detail;
-        private Long likes;
-        private Long comments;
-        private Boolean isPublic;
+        private Long likes; // 좋아요 수
+        private Long comments; // 댓글 수
+        private Boolean isPublic; // 공개 여부
         private LocalDateTime createdAt;
     }
 }
