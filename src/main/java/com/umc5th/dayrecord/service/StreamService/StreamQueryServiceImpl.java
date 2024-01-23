@@ -11,6 +11,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -46,8 +47,10 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     }
 
     @Override
-    public Slice<Stream> getStreamList(Long userId, Integer page){
-        Slice<Stream> streamList = streamRepository.findAllByUserId(userId, PageRequest.of(page, 10));
+    public List<Stream> getStreamList(Long userId, Integer page){
+        List<Stream> streamList = streamRepository.findAll();
+        // userId, PageRequest.of(page, 10)
+        System.out.println("Stream " + streamList);
         return streamList;
     }
 }

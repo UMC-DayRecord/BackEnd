@@ -21,17 +21,17 @@ public class StreamConveter {
                 .build();
     }
 
-    public static StreamDTO.streamSummaryListDTO responseStream(Slice<Stream> streamList) {
+    public static StreamDTO.streamSummaryListDTO responseStream(List<Stream> streamList) {
         List<StreamDTO.streamSummaryDTO> streamDTOList = streamList.stream()
                 .map((Stream stream) -> fetchStream(stream))
                 .collect(Collectors.toList());
 
         return StreamDTO.streamSummaryListDTO.builder()
                 .streamList(streamDTOList)
-                .listSize(streamList.getNumberOfElements())
-                .hasNext(streamList.hasNext())
-                .isFirst(streamList.isFirst())
-                .isLast(streamList.isLast())
+                // .listSize(streamList.getNumberOfElements())
+                // .hasNext(streamList.hasNext())
+                // .isFirst(streamList.isFirst())
+                // .isLast(streamList.isLast())
                 .build();
     }
 }

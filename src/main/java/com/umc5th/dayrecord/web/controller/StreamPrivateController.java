@@ -16,6 +16,8 @@ import com.umc5th.dayrecord.web.dto.StreamDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.List;
+
 import javax.websocket.server.PathParam;
 
 import org.springframework.data.domain.Slice;
@@ -61,14 +63,19 @@ public class StreamPrivateController {
                                                                         @CheckPage @RequestParam(name = "page") Integer page) {
       
         // 공개, 비공개를 가리지 않고 해당 유저의 스트림을 전부 조회함
-        StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
-            .userId(userId)
-            .page(page)
-            .build();
+        // StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
+        //     .userId(userId)
+        //     .page(page)
+        //     .build();
 
-        Slice<Stream> streamList =  streamQueryService.getStreamList(request);
+        List<Stream> streamList =  streamQueryService.getStreamList(userId, page);
             
         return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
     }
     
+    @GetMapping("/posts/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@ExistPost @PathVariable(name = "postId") Long postId) {
+        Post post = postQueryService.getPostDetailInfo(postId);
+        return ApiResponse.onSuccess(PostConverter.detailPost(post));
+    }
 }
