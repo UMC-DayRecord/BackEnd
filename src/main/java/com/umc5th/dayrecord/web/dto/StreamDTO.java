@@ -11,13 +11,9 @@ public class StreamDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class postSummaryDTO {
-        private Long postId;
-        private String nickname;
-        private List<String> postImg;
-        private Long likes;
-        private Boolean isLike;
-        private Long comments;
-        private LocalDateTime createdAt;
+    public static class streamCreateDTO {
+        private Long streamId;
+        private String streamName;
+        private Boolean isPublic; // 공개 여부
     }
 }
