@@ -39,7 +39,10 @@ public class CommentDTO {
     @AllArgsConstructor
     public static class commentListDTO {
         private List<commentResponseDTO> commentList;
-        private Long listSize;
+        private Integer listSize; // 페이지 크기
+        private Boolean hasNext; // 다음 페이지 여부
+        private Boolean isFirst; // 첫 번째 페이지인지 여부
+        private Boolean isLast; // 마지막 페이지인지 여부
     }
 
     @Getter

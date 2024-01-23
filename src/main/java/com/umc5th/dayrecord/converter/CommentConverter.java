@@ -4,6 +4,7 @@ import com.umc5th.dayrecord.domain.Comment;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.web.dto.CommentDTO;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,13 +30,17 @@ public class CommentConverter {
                 .build();
     }
 
-    public static CommentDTO.commentListDTO getComments(List<Comment> list, Long userId) {
+    public static CommentDTO.commentListDTO getComments(Slice<Comment> list, Long userId) {
         List<CommentDTO.commentResponseDTO> commentList = list.stream()
                 .map((Comment comment) -> responseComment(comment, userId))
                 .collect(Collectors.toList());
+
         return CommentDTO.commentListDTO.builder()
                 .commentList(commentList)
-                .listSize(Long.valueOf(list.size()))
+                .listSize(list.getNumberOfElements())
+                .hasNext(list.hasNext())
+                .isFirst(list.isFirst())
+                .isLast(list.isLast())
                 .build();
     }
 

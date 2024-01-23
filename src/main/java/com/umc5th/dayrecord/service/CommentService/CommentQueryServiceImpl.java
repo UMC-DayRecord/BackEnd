@@ -5,9 +5,9 @@ import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.repository.CommentRepository;
 import com.umc5th.dayrecord.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -17,9 +17,9 @@ public class CommentQueryServiceImpl implements CommentQueryService {
     private final PostRepository postRepository;
 
     @Override
-    public List<Comment> commentList(Long postId) {
+    public Slice<Comment> commentList(Long postId, Integer page) {
         Post post = postRepository.findById(postId).get();
-        List<Comment> comments = commentRepository.findAllByPost(post);
+        Slice<Comment> comments = commentRepository.findAllByPost(post, PageRequest.of(page, 10));
         return comments;
     }
 

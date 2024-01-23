@@ -6,17 +6,18 @@ import com.umc5th.dayrecord.domain.Comment;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.service.CommentService.CommentCommandService;
 import com.umc5th.dayrecord.service.CommentService.CommentQueryService;
+import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.ExistComment;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.CommentDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -35,8 +36,9 @@ public class CommentController {
 
     @GetMapping("/{postId}/list/{userId}")
     public ApiResponse<CommentDTO.commentListDTO> getCommentList(@ExistPost @PathVariable(name = "postId") Long postId,
-                                                                 @ExistUser @PathVariable(name = "userId") Long userId) {
-        List<Comment> commentList = commentQueryService.commentList(postId);
+                                                                 @ExistUser @PathVariable(name = "userId") Long userId,
+                                                                 @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Comment> commentList = commentQueryService.commentList(postId, page-1);
         return ApiResponse.onSuccess(CommentConverter.getComments(commentList, userId));
     }
 
