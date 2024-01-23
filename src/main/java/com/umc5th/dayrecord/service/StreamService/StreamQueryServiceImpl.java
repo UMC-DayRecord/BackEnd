@@ -7,6 +7,8 @@ import com.umc5th.dayrecord.repository.UserRepository;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,30 +20,35 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     private final StreamRepository streamRepository;
     private final UserRepository userRepository;
 
-
-    public StreamDTO.streamResponseDTO insertStream(StreamDTO.streamCreateDTO request) {
+    @Override
+    public StreamDTO.streamDefaultDTO insertStream(StreamDTO.streamDefaultDTO request) {
         
         // User user = UserConverter.RegisterRequestToUser(request);
         
         Optional<User> user = userRepository.findById(request.getUserId());
-        System.out.println("test" + user.get());
+        // System.out.println("test" + user.get());
         Stream stream = Stream.builder()
                         .streamName(request.getStreamName())
                         .isPublic(request.getIsPublic())
                         .user(user.get())
                         .build();
-        System.out.println("stream" + stream);
+        // System.out.println("stream" + stream);
         
         streamRepository.save(stream);
 
-        StreamDTO.streamResponseDTO streamResponse = StreamDTO.streamResponseDTO.builder()
+        StreamDTO.streamDefaultDTO streamResponse = StreamDTO.streamDefaultDTO.builder()
             .userId(stream.getUser().getId())
             .isPublic(stream.getIsPublic())
             .streamName(stream.getStreamName())
             .streamId(stream.getId())
             .build();
-        // Stream stream = streamRepository.save(userId, streamName);
         return streamResponse;
     }
 
+    @Override
+    public Slice<Stream> getStreamList(Long userId, Integer page){
+        Slice<Stream> streamList = streamRepository.findAllByUserId(userId, PageRequest.of(page, 10));
+        return streamList;
+    }
 }
+

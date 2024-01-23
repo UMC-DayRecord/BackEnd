@@ -24,20 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("/stream/public")
 public class StreamPublicController {
-    private final StreamQueryService streamQueryService;
-
-    @PostMapping("/test")
-    public ApiResponse<StreamDTO.streamCreateDTO> postStreamCreate(@ExistUser @RequestParam(name = "userId") Long userId,
-                                                               @CheckQuery @RequestParam(name = "streamName") String streamName) {
-        
-
-        StreamDTO.streamCreateDTO request = StreamDTO.streamCreateDTO.builder()
-            .isPublic(false)
-            .streamName(streamName).build();
-        Stream stream = streamQueryService.insertStream(request);
-
-        return ApiResponse.onSuccess(request);
-    }
     private final PostQueryService postQueryService;
 
     @GetMapping("/{userId}")

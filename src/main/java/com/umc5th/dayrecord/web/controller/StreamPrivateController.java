@@ -2,7 +2,9 @@ package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.converter.PostConverter;
+import com.umc5th.dayrecord.converter.StreamConveter;
 import com.umc5th.dayrecord.domain.Post;
+import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
@@ -13,6 +15,8 @@ import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+
+import javax.websocket.server.PathParam;
 
 import org.springframework.data.domain.Slice;
 import org.springframework.validation.annotation.Validated;
@@ -30,27 +34,41 @@ public class StreamPrivateController {
      * @param request StreamDTO.streamCreateRequestDTO;
      * @return ApiResponse
      */
-    @PostMapping("/")
-    public ApiResponse<StreamDTO.streamResponseDTO> postStreamCreate(@ExistUser @RequestParam(name = "userId") Long userId,
+    @PostMapping("/my")
+    public ApiResponse<StreamDTO.streamDefaultDTO> postStreamCreate(@ExistUser @RequestParam(name = "userId") Long userId,
                                                                @CheckQuery @RequestParam(name = "streamName") String streamName) {
       
-        StreamDTO.streamCreateDTO request = StreamDTO.streamCreateDTO.builder()
+        StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
             .isPublic(false)
             .streamName(streamName)
             .userId(userId)
             .build();
         // userQueryService
         //     .getUser(request.getEmail(), request.getName())
-        StreamDTO.streamResponseDTO streamResponse = streamQueryService.insertStream(request);
+        StreamDTO.streamDefaultDTO streamResponse = streamQueryService.insertStream(request);
             
         return ApiResponse.onSuccess(streamResponse);
     }
-    private final PostQueryService postQueryService;
-    @GetMapping("/user/{userId}")
-    public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
-                                                        @CheckPage @RequestParam(name = "page") Integer page) {
+    
+    
+    /**
+     * 마이스트림 조회 (카테고리 조회)
+     * @param userId
+     * @return
+     */
+    @GetMapping("/my")
+    public ApiResponse<StreamDTO.streamSummaryListDTO> getStreamList(@ExistUser @RequestParam(name = "userId") Long userId,
+                                                                        @CheckPage @RequestParam(name = "page") Integer page) {
+      
+        // 공개, 비공개를 가리지 않고 해당 유저의 스트림을 전부 조회함
+        StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
+            .userId(userId)
+            .page(page)
+            .build();
 
-        Slice<Post> postList = postQueryService.getPostList(userId, page-1);
-        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+        Slice<Stream> streamList =  streamQueryService.getStreamList(request);
+            
+        return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
     }
+    
 }
