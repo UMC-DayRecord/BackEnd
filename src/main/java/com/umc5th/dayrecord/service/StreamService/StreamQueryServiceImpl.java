@@ -1,7 +1,9 @@
 package com.umc5th.dayrecord.service.StreamService;
 
+import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.domain.User;
+import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.repository.StreamRepository;
 import com.umc5th.dayrecord.repository.UserRepository;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
@@ -20,6 +22,8 @@ public class StreamQueryServiceImpl implements StreamQueryService {
 
     private final StreamRepository streamRepository;
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
+    
 
     @Override
     public StreamDTO.streamDefaultDTO insertStream(StreamDTO.streamDefaultDTO request) {
@@ -48,10 +52,31 @@ public class StreamQueryServiceImpl implements StreamQueryService {
 
     @Override
     public List<Stream> getStreamList(Long userId, Integer page){
-        List<Stream> streamList = streamRepository.findAll();
+        User user = userRepository.findById(userId).get();
+        
+        //List<Stream> streamList = streamRepository.findAll();
+        List<Stream> streamList = user.getStreamList();
         // userId, PageRequest.of(page, 10)
-        System.out.println("Stream " + streamList);
+        //System.out.println("Stream " + streamList);
         return streamList;
     }
+
+    public Post getPostDetailInfo(Long postId) {
+        Post post = postRepository.findById(postId).get();
+        return post;
+    }
+
+
+    @Override
+    public Slice<Post> getSearchList(Long userId, String query, Integer page) {
+        Slice<Post> postList = streamRepository.findBySearchPost(userId, query, PageRequest.of(page, 10));
+        return postList;
+    }
+    
+    @Override
+    public void deleteStream(Long streamId){
+        streamRepository.deleteById(streamId);
+    }
+
 }
 

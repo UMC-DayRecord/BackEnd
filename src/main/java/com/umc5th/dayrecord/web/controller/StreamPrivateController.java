@@ -31,6 +31,15 @@ import org.springframework.web.bind.annotation.*;
 public class StreamPrivateController {
     
     private final StreamQueryService streamQueryService;
+    private final PostQueryService postQueryService;
+    
+    @GetMapping("/search/{userId}")
+    public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                               @CheckQuery @RequestParam(name = "query") String query,
+                                                               @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = streamQueryService.getSearchList(userId, query, page - 1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
     /**
      * 마이 스트림 생성 API
      * @param request StreamDTO.streamCreateRequestDTO;
@@ -63,15 +72,21 @@ public class StreamPrivateController {
                                                                         @CheckPage @RequestParam(name = "page") Integer page) {
       
         // 공개, 비공개를 가리지 않고 해당 유저의 스트림을 전부 조회함
-        // StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
-        //     .userId(userId)
-        //     .page(page)
-        //     .build();
 
         List<Stream> streamList =  streamQueryService.getStreamList(userId, page);
             
         return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
     }
+
+    @DeleteMapping("/my/{streamId}")
+    public ApiResponse<Long> deleteStream(@ExistUser @PathVariable(name = "streamId") Long streamId) {
+      
+
+        streamQueryService.deleteStream(streamId);
+            
+        return ApiResponse.onSuccess(streamId);
+    }
+    
     
     @GetMapping("/posts/{postId}")
     public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@ExistPost @PathVariable(name = "postId") Long postId) {
