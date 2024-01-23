@@ -23,22 +23,25 @@ public class LikesCommandServiceImpl implements LikesCommandService {
 
 
     @Override
-    public void updateLikes(Long postId, Long userId) {
+    public Boolean updateLikes(Long postId, Long userId) {
         Post post = postRepository.findById(postId).get();
         User user = userRepository.findById(userId).get();
         Optional<Likes> likes = likesRepository.findByPostAndUser(post, user);
         if(likes.isPresent()) {
             likesRepository.delete(likes.get());
+            if(!likeCheck(post, user))
+                return false;
         } else if(!likes.isPresent()) {
             Likes like = LikesConverter.createLike(post, user);
             likesRepository.save(like);
+            if(likeCheck(post, user))
+                return true;
         }
+        return false;
     }
 
     @Override
-    public Boolean likeCheck(Long postId, Long userId) {
-        Post post = postRepository.findById(postId).get();
-        User user = userRepository.findById(userId).get();
+    public Boolean likeCheck(Post post, User user) {
         Optional<Likes> likes = likesRepository.findByPostAndUser(post, user);
         if(likes.isPresent()) {
             return true;

@@ -7,11 +7,8 @@ public interface PostQueryService {
 
     Slice<Post> getPostList(Long userId, Integer page);
 
-<<<<<<< HEAD
     Post getPost(Long postId);
-=======
     Slice<Post> getSearchList(Long userId, String query, Integer page);
     Post getPostDetailInfo(Long postId);
     Boolean existById(Long postId);
->>>>>>> 708a1d274281042ee40a2c96ec377ab0d7928f96
 }
