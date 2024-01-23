@@ -29,6 +29,10 @@ public class UserQueryServiceImpl implements UserQueryService {
     }
 
     @Override
+    public Optional<User> getUser(Long userId) {
+        return userRepository.getUserById(userId);
+    }
+    @Override
     public Optional<User> getUser(String email, String name) {
         return userRepository.getUserByEmailAndName(email, name);
     }
