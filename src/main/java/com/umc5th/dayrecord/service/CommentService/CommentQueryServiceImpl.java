@@ -16,6 +16,12 @@ public class CommentQueryServiceImpl implements CommentQueryService {
     private final CommentRepository commentRepository;
     private final PostRepository postRepository;
 
+    /**
+     * 게시글 댓글 조회
+     * @param postId
+     * @param page
+     * @return Slice<Comment> (페이징된 댓글 리스트)
+     */
     @Override
     public Slice<Comment> commentList(Long postId, Integer page) {
         Post post = postRepository.findById(postId).get();
@@ -23,6 +29,11 @@ public class CommentQueryServiceImpl implements CommentQueryService {
         return comments;
     }
 
+    /**
+     * 댓글 유효성 검사
+     * @param commentId
+     * @return Boolean(DB에 해당 comment가 존재하지 않으면 => false, 존재하면 => true)
+     */
     @Override
     public Boolean existById(Long commentId) {
         return commentRepository.existsById(commentId);
