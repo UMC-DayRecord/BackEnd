@@ -8,7 +8,7 @@ public interface CommentCommandService {
 
     Comment createComment(CommentDTO.commentRequestDTO request, Long postId);
 
-    Post removeComment(Long commentId);
+    Integer removeComment(Long commentId);
 
     Comment updateComment(CommentDTO.editCommentRequestDTO request, Long commentId);
 }

@@ -39,11 +39,11 @@ public class CommentCommandServiceImpl implements CommentCommandService {
      * @return Post(삭제 후 해당 게시글 댓글 수 return)
      */
     @Override
-    public Post removeComment(Long commentId) {
+    public Integer removeComment(Long commentId) {
         Comment comment = commentRepository.findById(commentId).get();
         Post post = comment.getPost();
         commentRepository.delete(comment);
-        return post;
+        return post.getCommentList().size();
     }
 
     /**

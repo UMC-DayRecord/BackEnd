@@ -44,9 +44,9 @@ public class CommentConverter {
                 .build();
     }
 
-    public static CommentDTO.commentSizeDTO commentSize(Post post) {
+    public static CommentDTO.commentSizeDTO commentSize(Integer commentSize) {
         return CommentDTO.commentSizeDTO.builder()
-                .commentSize(Long.valueOf(post.getCommentList().size()))
+                .commentSize(Long.valueOf(commentSize))
                 .build();
     }
 }

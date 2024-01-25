@@ -63,8 +63,8 @@ public class CommentController {
      */
     @DeleteMapping("/{commentId}")
     public ApiResponse<CommentDTO.commentSizeDTO> deleteComment(@ExistComment @PathVariable(name = "commentId") Long commentId) {
-        Post post = commentCommandService.removeComment(commentId);
-        return ApiResponse.onSuccess(CommentConverter.commentSize(post));
+        Integer commentSize = commentCommandService.removeComment(commentId);
+        return ApiResponse.onSuccess(CommentConverter.commentSize(commentSize));
     }
 
     /**
