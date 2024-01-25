@@ -40,6 +40,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _JWT_TOKEN_VERIFICATION_FAILED(HttpStatus.BAD_REQUEST, "LOGIN4001", "JWT 토큰 검증에 실패했습니다."),
 
     _POST_NOT_FOUNT(HttpStatus.NOT_FOUND, "POST404", "일기를 찾을 수 없습니다."),
+    _COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "댓글을 찾을 수 없습니다."),
     ;
 
 
