@@ -7,7 +7,6 @@ import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.LikesRepository;
 import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.repository.UserRepository;
-import com.umc5th.dayrecord.service.PostService.PostCommandService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,13 +28,11 @@ public class LikesCommandServiceImpl implements LikesCommandService {
         Optional<Likes> likes = likesRepository.findByPostAndUser(post, user);
         if(likes.isPresent()) {
             likesRepository.delete(likes.get());
-            if(!likeCheck(post, user))
-                return false;
+            return likeCheck(post, user);
         } else if(!likes.isPresent()) {
             Likes like = LikesConverter.createLike(post, user);
             likesRepository.save(like);
-            if(likeCheck(post, user))
-                return true;
+            return likeCheck(post, user);
         }
         return false;
     }
@@ -43,9 +40,6 @@ public class LikesCommandServiceImpl implements LikesCommandService {
     @Override
     public Boolean likeCheck(Post post, User user) {
         Optional<Likes> likes = likesRepository.findByPostAndUser(post, user);
-        if(likes.isPresent()) {
-            return true;
-        }
-        return false;
+        return likes.isPresent();
     }
 }
