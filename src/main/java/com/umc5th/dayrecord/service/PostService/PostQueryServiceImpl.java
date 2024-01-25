@@ -34,6 +34,10 @@ public class PostQueryServiceImpl implements PostQueryService {
      * 검색 내용이 포함된 일기 & 검색 내용이 포함된 스트림 키워드에 포함된 일기들
      */
     @Override
+    public Post getPost(Long postId) {
+        return postRepository.findById(postId).get();
+    }
+
     public Slice<Post> getSearchList(Long userId, String query, Integer page) {
         Slice<Post> postList = postRepository.findBySearchPost(userId, query, PageRequest.of(page, 10));
         return postList;
