@@ -23,4 +23,6 @@ public interface StreamQueryService {
     Slice<Post> getSearchList(Long userId, String query, Integer page);
 
     void deleteStream(Long streamId);
+
+    Boolean existById(Long streamId);
 }

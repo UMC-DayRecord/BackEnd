@@ -10,6 +10,7 @@ import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
+import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
@@ -65,7 +66,7 @@ public class StreamPrivateController {
     /**
      * 마이스트림 조회 (카테고리 조회)
      * @param userId
-     * @return
+     * @return ApiResponse
      */
     @GetMapping("/my")
     public ApiResponse<StreamDTO.streamSummaryListDTO> getStreamList(@ExistUser @RequestParam(name = "userId") Long userId,
@@ -77,14 +78,29 @@ public class StreamPrivateController {
             
         return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
     }
-
+    /**
+     * 마이스트림 삭제 API
+     * @param streamId
+     * @return ApiResponse
+     */
     @DeleteMapping("/my/{streamId}")
-    public ApiResponse<Long> deleteStream(@ExistUser @PathVariable(name = "streamId") Long streamId) {
+    public ApiResponse<Long> deleteStream(@ExistStream @PathVariable(name = "streamId") Long streamId) {
       
-
         streamQueryService.deleteStream(streamId);
             
         return ApiResponse.onSuccess(streamId);
+    }
+    /**
+     * 마이스트림 일기 삭제 API
+     * @param streamId
+     * @return ApiResponse
+     */
+    @DeleteMapping("/my/{postId}")
+    public ApiResponse<Long> deletePost(@ExistPost @PathVariable(name = "postId") Long postId) {
+      
+        streamQueryService.deletePost(postId);
+            
+        return ApiResponse.onSuccess(postId);
     }
     
     

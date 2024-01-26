@@ -78,5 +78,10 @@ public class StreamQueryServiceImpl implements StreamQueryService {
         streamRepository.deleteById(streamId);
     }
 
+    @Override
+    public Boolean existById(Long streamId) {
+        return streamRepository.existsById(streamId);
+    }
+
 }
 
