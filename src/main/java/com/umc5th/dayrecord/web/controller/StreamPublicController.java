@@ -3,12 +3,16 @@ package com.umc5th.dayrecord.web.controller;
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.converter.PostConverter;
 import com.umc5th.dayrecord.domain.Post;
+import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
+import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.PostDTO;
+import com.umc5th.dayrecord.web.dto.StreamDTO;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
@@ -20,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequestMapping("/stream/public")
 public class StreamPublicController {
-
     private final PostQueryService postQueryService;
 
     @GetMapping("/{userId}")

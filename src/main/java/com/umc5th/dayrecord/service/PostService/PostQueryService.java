@@ -1,6 +1,8 @@
 package com.umc5th.dayrecord.service.PostService;
 
 import com.umc5th.dayrecord.domain.Post;
+import com.umc5th.dayrecord.web.dto.PostDTO;
+
 import org.springframework.data.domain.Slice;
 
 public interface PostQueryService {
@@ -11,4 +13,10 @@ public interface PostQueryService {
     Slice<Post> getSearchList(Long userId, String query, Integer page);
     Post getPostDetailInfo(Long postId);
     Boolean existById(Long postId);
+
+    void deletePost(Long postId);
+
+    Post updatePost(PostDTO.editPostRequestDTO request, Long postId);
+
+    Post changeVisiblePost(PostDTO.visiblePostRequestDTO request, Long userId, Long streamId);
 }
