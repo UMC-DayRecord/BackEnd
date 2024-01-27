@@ -42,7 +42,7 @@ public class PostConverter {
                 .isLast(postList.isLast())
                 .build();
     }
-
+    //detailPost == responsePost
     public static PostDTO.postDetailDTO detailPost(Post post) {
         return PostDTO.postDetailDTO.builder()
                 .postId(post.getId())
@@ -57,4 +57,25 @@ public class PostConverter {
                 .createdAt(post.getCreatedAt())
                 .build();
     }
+    /**
+     * 
+     * @param post
+     * @return
+    public static PostDTO.postDetailDTO responsePost(Post post) {
+        return PostDTO.postDetailDTO.builder()
+                .postId(post.getId()
+                .streamName(post.getStream().getStreamName())
+                .postImg(post.getPostPhotoList().stream()
+                        .map(PostPhoto::getUrl)
+                        .collect(Collectors.toList()))
+                .detail(post.getDetail())
+                .likes(Long.valueOf(post.getLikesList().size()))
+                .likes(Long.valueOf(post.getLikesList().size()))
+                .comments(Long.valueOf(post.getCommentList().size()))
+                .isPublic(post.getIsPublic())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
+     */ 
+    
 }

@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.data.domain.Slice;
@@ -34,6 +35,17 @@ public class StreamPrivateController {
     private final StreamQueryService streamQueryService;
     private final PostQueryService postQueryService;
     
+    
+
+    /**
+     * 마이스트림 검색
+     * post detail 과 stream name을 검색함
+     * 
+     * @param userId
+     * @param query
+     * @param page
+     * @return ApiResponse
+     */
     @GetMapping("/search/{userId}")
     public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
                                                                @CheckQuery @RequestParam(name = "query") String query,
@@ -41,6 +53,7 @@ public class StreamPrivateController {
         Slice<Post> postList = streamQueryService.getSearchList(userId, query, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
+
     /**
      * 마이 스트림 생성 API
      * @param request StreamDTO.streamCreateRequestDTO;
@@ -78,6 +91,17 @@ public class StreamPrivateController {
             
         return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
     }
+    //stream/private/my/{uesrId}/{streamId}
+    @GetMapping("/my/{uesrId}/{streamId}")
+    public ApiResponse<PostDTO.postSummaryListDTO> getPostList(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                            @ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                        @CheckPage @RequestParam(name = "page") Integer page) {
+
+        Slice<Post> postList = streamQueryService.getStreamPostList(userId, streamId, page-1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+
     /**
      * 마이스트림 삭제 API
      * @param streamId
@@ -90,23 +114,74 @@ public class StreamPrivateController {
             
         return ApiResponse.onSuccess(streamId);
     }
-    /**
-     * 마이스트림 일기 삭제 API
-     * @param streamId
-     * @return ApiResponse
-     */
-    @DeleteMapping("/my/{postId}")
+
+
+     /**
+      * 마이스트림 일기 삭제 API
+      * @param postId
+      * @return ApiResponse
+      */
+    @DeleteMapping("/my/post/{postId}")
     public ApiResponse<Long> deletePost(@ExistPost @PathVariable(name = "postId") Long postId) {
       
-        streamQueryService.deletePost(postId);
+        postQueryService.deletePost(postId);
             
         return ApiResponse.onSuccess(postId);
     }
     
     
+
+
+    
+    /**
+     * 
+     * @param postId
+     * @return ApiResponse
+     */
     @GetMapping("/posts/{postId}")
     public ApiResponse<PostDTO.postDetailDTO> getPostDetail(@ExistPost @PathVariable(name = "postId") Long postId) {
         Post post = postQueryService.getPostDetailInfo(postId);
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
+    /**
+     * post 수정 API
+     * @param postId
+     * @return ApiResponse
+     */
+    @PutMapping("/posts/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> changePost(@ExistPost @PathVariable(name = "postId") Long postId,
+                                                         @Valid @RequestBody PostDTO.editPostRequestDTO request
+                                                            
+                                                            ) {
+        // System.out.println("userId"+ request.getUserId());
+        Post post = postQueryService.updatePost(request, postId); 
+        return ApiResponse.onSuccess(PostConverter.detailPost(post));
+    
+    }
+
+
+    //stream/private/setvisibility/{userId}/{streamId}  ?visible={bool_visible}
+    @PutMapping("/setvisibility/{userId}/{streamId}")
+    public ApiResponse<PostDTO.postDetailDTO> changeVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                            @ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                            @Valid @RequestBody PostDTO.visiblePostRequestDTO request
+                                                            ){
+                                                       
+        Post post = postQueryService.changeVisiblePost(request, userId, streamId);          
+        return ApiResponse.onSuccess(PostConverter.detailPost(post));
+    }
+
+
+    /**
+     * 댓글 수정 API
+     * @param commentId
+     * @param request
+     * @return CommentDTO.commentResponseDTO
+    @PutMapping("/{commentId}")
+    public ApiResponse<CommentDTO.commentResponseDTO> changeComment(@ExistComment @PathVariable(name = "commentId") Long commentId,
+                                                                    @Valid @RequestBody CommentDTO.editCommentRequestDTO request) {
+        Comment comment = commentCommandService.updateComment(request, commentId);
+        return ApiResponse.onSuccess(CommentConverter.responseComment(comment, request.getUserId()));
+    }
+     */
 }

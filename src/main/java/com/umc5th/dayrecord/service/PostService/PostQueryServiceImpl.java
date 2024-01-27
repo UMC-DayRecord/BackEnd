@@ -2,6 +2,8 @@ package com.umc5th.dayrecord.service.PostService;
 
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.repository.PostRepository;
+import com.umc5th.dayrecord.web.dto.PostDTO;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -35,5 +37,29 @@ public class PostQueryServiceImpl implements PostQueryService {
     @Override
     public Boolean existById(Long postId) {
         return postRepository.existsById(postId);
+    }
+
+    @Override
+    public void deletePost(Long postId){
+        postRepository.deleteById(postId);
+    }
+    /**
+     * 일기 수정
+     * @param request
+     * @param commentId
+     * @return Comment(수정된 댓글 반환)
+     */
+    @Override
+    public Post updatePost(PostDTO.editPostRequestDTO request, Long postId) {
+        Post post = postRepository.findById(postId).get();
+        post.update(request.getDetail());
+        return postRepository.save(post);
+    }
+
+    @Override
+    public Post changeVisiblePost(PostDTO.visiblePostRequestDTO request, Long userId, Long streamId){
+        Post post = postRepository.findById(request.getPostId()).get();
+        post.updateVisible(request.getIsPublic());
+        return postRepository.save(post);
     }
 }

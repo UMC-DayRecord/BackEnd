@@ -14,6 +14,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StreamRepository extends JpaRepository<Stream, Long> {
 
+    @Query("SELECT p FROM Post p WHERE (p.user.id = :userId) AND (p.stream.id = :streamId)")
+    Slice<Post> findByStream(@Param("userId") Long userId, @Param("streamId") Long streamId, PageRequest pageRequest);
+
     // @Query("SELECT s FROM Stream s WHERE (s.user.id <> 1")
     // @Query("SELECT s FROM Stream s WHERE (s.user.id <> 1)")
     // Slice<Stream> findAllByUserId(@Param("userId") Long userId, PageRequest pageRequest);

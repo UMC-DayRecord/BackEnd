@@ -6,6 +6,7 @@ import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.repository.StreamRepository;
 import com.umc5th.dayrecord.repository.UserRepository;
+import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 
 import lombok.RequiredArgsConstructor;
@@ -61,9 +62,16 @@ public class StreamQueryServiceImpl implements StreamQueryService {
         return streamList;
     }
 
+
     public Post getPostDetailInfo(Long postId) {
         Post post = postRepository.findById(postId).get();
         return post;
+    }
+
+    @Override
+    public Slice<Post> getStreamPostList(Long userId, Long streamId, Integer page) {
+        Slice<Post> postList = streamRepository.findByStream(userId, streamId, PageRequest.of(page, 10));
+        return postList;
     }
 
 
@@ -77,11 +85,17 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     public void deleteStream(Long streamId){
         streamRepository.deleteById(streamId);
     }
+    @Override
+    public void deletePost(Long postId){
+        postRepository.deleteById(postId);
+    }
 
     @Override
     public Boolean existById(Long streamId) {
         return streamRepository.existsById(streamId);
     }
+
+    // Post updatePost(PostDTO.editPostRequestDTO request, Long postId);
 
 }
 

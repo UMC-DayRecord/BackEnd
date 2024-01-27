@@ -5,6 +5,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.validation.constraints.NotEmpty;
+
+
+import com.umc5th.dayrecord.validation.annotation.ExistUser;
+
 public class PostDTO {
 
     @Getter
@@ -48,4 +53,35 @@ public class PostDTO {
         private Boolean isPublic; // 공개 여부
         private LocalDateTime createdAt;
     }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class editPostRequestDTO {
+        @ExistUser
+        private Long userId;
+        @NotEmpty(message = "내용을 입력해 주세요.")
+        private String detail;
+    }
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class visiblePostRequestDTO {
+        @ExistUser
+        private Long postId;
+        private Boolean isPublic;
+    }
+    
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class postResponseDTO {
+        private Long postId;
+        private String nickname;
+        private String detail;
+        private Boolean isAuthor;
+    }
+
 }

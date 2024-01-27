@@ -36,4 +36,12 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<PostPhoto> postPhotoList;
+
+    public void update(String detail) {
+        this.detail = detail;
+    }
+
+    public void updateVisible(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }
