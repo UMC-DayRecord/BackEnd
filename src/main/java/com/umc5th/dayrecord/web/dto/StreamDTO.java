@@ -29,7 +29,7 @@ public class StreamDTO {
         private Long userId;
         private Long streamId;
         private String streamName;
-        private List<postSummaryDTO> postList;
+        //private List<postSummaryDTO> postList;
         private Boolean isPublic; // 공개 여부
     }
  

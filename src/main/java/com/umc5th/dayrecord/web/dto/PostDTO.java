@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotEmpty;
 
-
+import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 
 public class PostDTO {
@@ -67,7 +67,7 @@ public class PostDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class visiblePostRequestDTO {
-        @ExistUser
+        @ExistPost
         private Long postId;
         private Boolean isPublic;
     }
