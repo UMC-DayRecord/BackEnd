@@ -47,4 +47,5 @@ public class StreamPublicController {
         Post post = postQueryService.getPostDetailInfo(postId);
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
+    
 }
