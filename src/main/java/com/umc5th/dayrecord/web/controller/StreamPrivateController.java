@@ -7,6 +7,7 @@ import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
+import com.umc5th.dayrecord.validation.annotation.CheckName;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
@@ -14,6 +15,8 @@ import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
+import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +39,15 @@ public class StreamPrivateController {
     private final PostQueryService postQueryService;
     
     
-
+//stream/private/my/{streamId}
+    // @DeleteMapping("/my/{streamId}")
+    @GetMapping("/my/{streamId}")
+    public ApiResponse<postSummaryListDTO> getStreamPostList(@ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                       @ExistUser @RequestParam(name = "userId") Long userId,
+                                                       @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = streamQueryService.getStreamPostList(userId, streamId, page - 1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
     /**
      * 마이스트림 검색
      * post detail 과 stream name을 검색함
@@ -61,7 +72,7 @@ public class StreamPrivateController {
      */
     @PostMapping("/my")
     public ApiResponse<StreamDTO.streamDefaultDTO> postStreamCreate(@ExistUser @RequestParam(name = "userId") Long userId,
-                                                               @CheckQuery @RequestParam(name = "streamName") String streamName) {
+                                                               @CheckName @RequestParam(name = "streamName") String streamName) {
       
         StreamDTO.streamDefaultDTO request = StreamDTO.streamDefaultDTO.builder()
             .isPublic(false)

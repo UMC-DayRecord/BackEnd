@@ -26,6 +26,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _QUERY_BAD_REQUEST(HttpStatus.BAD_REQUEST, "QUERY401", "검색어를 2글자 이상 입력해주세요."),
 
+    _NAME_BAD_REQUEST(HttpStatus.BAD_REQUEST, "NAME401", "이름을 1글자 이상 입력해주세요."),
+
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
 
     _LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401", "아이디 또는 비밀번호가 맞지 않습니다."),
