@@ -22,4 +22,8 @@ public class DiaryPhoto extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stream_id")
+    private Stream stream;
 }
