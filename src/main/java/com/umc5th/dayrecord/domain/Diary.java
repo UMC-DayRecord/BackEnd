@@ -24,11 +24,6 @@ public class Diary extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stream_id")
-    private Stream stream;
-
-
     @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
     private List<DiaryPhoto> diaryPhotoList;
 
