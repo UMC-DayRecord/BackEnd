@@ -173,9 +173,9 @@ public class StreamPrivateController {
 
     //stream/private/setvisibility/{userId}/{streamId}  ?visible={bool_visible}
     @PutMapping("/stream-visible/{userId}/{streamId}")
-    public ApiResponse<PostDTO.postDetailDTO> changeStreamVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+    public ApiResponse<StreamDTO.streamSummaryDTO> changeStreamVisible(@ExistUser @PathVariable(name = "userId") Long userId,
                                                             @ExistStream @PathVariable(name = "streamId") Long streamId,
-                                                            @Valid @RequestBody PostDTO.visiblePostRequestDTO request
+                                                            @Valid @RequestBody StreamDTO.visibleStreamRequestDTO request
                                                             ){
         Stream stream = streamQueryService.changeVisibleStream(request, userId, streamId);          
         return ApiResponse.onSuccess(StreamConverter.detailStream(stream));
