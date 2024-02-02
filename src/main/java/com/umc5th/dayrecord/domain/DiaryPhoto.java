@@ -23,11 +23,7 @@ public class DiaryPhoto extends BaseEntity {
     @JoinColumn(name = "diary_id")
     private Diary diary;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "stream_id")
-    private Stream stream;
-
-    public void updateStream(Stream stream) {
-        this.stream = stream;
+    public void updateDiary(Diary diary) {
+        this.diary = diary;
     }
 }

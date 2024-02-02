@@ -9,7 +9,7 @@ public class DiaryPhotoConverter {
         return DiaryPhotoDTO.photoResponseDTO.builder()
                 .diaryPhotoId(diaryPhoto.getId())
                 .status(diaryPhoto.isStatus())
-                .streamName(diaryPhoto.getStream().getStreamName())
+                .streamName(diaryPhoto.getDiary().getStream().getStreamName())
                 .build();
     }
 }
