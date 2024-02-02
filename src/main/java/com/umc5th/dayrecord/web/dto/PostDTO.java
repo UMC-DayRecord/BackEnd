@@ -67,8 +67,6 @@ public class PostDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class visiblePostRequestDTO {
-        @ExistPost
-        private Long postId;
         private Boolean isPublic;
     }
     

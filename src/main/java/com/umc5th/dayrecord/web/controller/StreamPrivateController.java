@@ -2,7 +2,7 @@ package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.converter.PostConverter;
-import com.umc5th.dayrecord.converter.StreamConveter;
+import com.umc5th.dayrecord.converter.StreamConverter;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
@@ -100,7 +100,7 @@ public class StreamPrivateController {
 
         List<Stream> streamList =  streamQueryService.getStreamList(userId, page);
             
-        return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
+        return ApiResponse.onSuccess(StreamConverter.responseStream(streamList));
     }
     //stream/private/my/{uesrId}/{streamId}
     @GetMapping("/my/{uesrId}/{streamId}")
@@ -172,13 +172,21 @@ public class StreamPrivateController {
 
 
     //stream/private/setvisibility/{userId}/{streamId}  ?visible={bool_visible}
-    @PutMapping("/setvisibility/{userId}/{streamId}")
-    public ApiResponse<PostDTO.postDetailDTO> changeVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+    @PutMapping("/stream-visible/{userId}/{streamId}")
+    public ApiResponse<PostDTO.postDetailDTO> changeStreamVisible(@ExistUser @PathVariable(name = "userId") Long userId,
                                                             @ExistStream @PathVariable(name = "streamId") Long streamId,
                                                             @Valid @RequestBody PostDTO.visiblePostRequestDTO request
                                                             ){
+        Stream stream = streamQueryService.changeVisibleStream(request, userId, streamId);          
+        return ApiResponse.onSuccess(StreamConverter.detailStream(stream));
+    }
+    @PutMapping("/post-visible/{userId}/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> changePostVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                            @ExistPost @PathVariable(name = "postId") Long postId,
+                                                            @Valid @RequestBody PostDTO.visiblePostRequestDTO request
+                                                            ){
                                                        
-        Post post = postQueryService.changeVisiblePost(request, userId, streamId);          
+        Post post = postQueryService.changeVisiblePost(request, userId, postId);          
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 

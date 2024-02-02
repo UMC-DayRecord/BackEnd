@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryDTO;
 
 public class StreamDTO {
@@ -44,4 +45,11 @@ public class StreamDTO {
         private Boolean isFirst; // 첫 번째 페이지인지 여부
         private Boolean isLast; // 마지막 페이지인지 여부
     }  
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class visibleStreamRequestDTO {
+        private Boolean isPublic;
+    }
 }
