@@ -29,4 +29,11 @@ public class DiaryPhotoCommandServiceImpl implements DiaryPhotoCommandService {
 
         return diaryPhotoRepository.save(diaryPhoto);
     }
+
+    @Override
+    public DiaryPhoto changeDelete(Long diaryPhotoId) {
+        DiaryPhoto diaryPhoto = diaryPhotoRepository.findById(diaryPhotoId).get();
+        diaryPhoto.changeStatus(!diaryPhoto.isStatus());
+        return diaryPhotoRepository.save(diaryPhoto);
+    }
 }

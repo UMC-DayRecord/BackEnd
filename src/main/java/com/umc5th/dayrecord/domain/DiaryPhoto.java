@@ -26,4 +26,8 @@ public class DiaryPhoto extends BaseEntity {
     public void updateDiary(Diary diary) {
         this.diary = diary;
     }
+
+    public void changeStatus(boolean status) {
+        this.status = status;
+    }
 }

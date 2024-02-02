@@ -6,4 +6,6 @@ import com.umc5th.dayrecord.web.dto.DiaryPhotoDTO;
 public interface DiaryPhotoCommandService {
 
     DiaryPhoto updatePhotoStream(DiaryPhotoDTO.changePhotoRequestDTO request);
+
+    DiaryPhoto changeDelete(Long diaryPhotoId);
 }
