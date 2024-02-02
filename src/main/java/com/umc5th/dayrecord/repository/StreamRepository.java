@@ -23,4 +23,6 @@ public interface StreamRepository extends JpaRepository<Stream, Long> {
 
     @Query("SELECT p FROM Post p WHERE (p.user.id = :userId) AND (p.detail LIKE %:query% OR p.stream.streamName LIKE %:query%)")
     Slice<Post> findBySearchPost(@Param("userId") Long userId, @Param("query") String query, PageRequest pageRequest);
+
+    Stream findByStreamName(String streamName);
 }
