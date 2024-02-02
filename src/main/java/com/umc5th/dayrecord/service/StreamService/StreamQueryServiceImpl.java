@@ -73,6 +73,12 @@ public class StreamQueryServiceImpl implements StreamQueryService {
         Slice<Post> postList = streamRepository.findByStream(userId, streamId, PageRequest.of(page, 10));
         return postList;
     }
+    
+    @Override
+    public Slice<Post> getDaliyBoardList(Long userId, Long streamId, Integer page) {
+        Slice<Post> postList = streamRepository.findByStream(userId, streamId, PageRequest.of(page, 10));
+        return postList;
+    }
 
 
     @Override
