@@ -1,7 +1,6 @@
 package com.umc5th.dayrecord.service;
 
 import com.umc5th.dayrecord.domain.User;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 
