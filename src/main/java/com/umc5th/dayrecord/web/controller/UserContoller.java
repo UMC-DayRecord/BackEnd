@@ -3,6 +3,7 @@ package com.umc5th.dayrecord.web.controller;
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
+import com.umc5th.dayrecord.apiPayload.exception.handler.VerificationHandler;
 import com.umc5th.dayrecord.service.UserCommandService;
 import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.service.VerificationService;
@@ -122,7 +123,7 @@ public class UserContoller {
      * @param request UserDTO.ResetPasswordRequestDTO
      * @return 성공 여부
      */
-    @PostMapping("/resetpassword")
+    @PutMapping("/resetpassword")
     public ApiResponse<?> resetPassword(
             @RequestBody @Valid UserDTO.ResetPasswordRequestDTO request
     ) {
@@ -146,7 +147,7 @@ public class UserContoller {
      * @param request UserDTO.ChangePasswordRequestDTO
      * @return 성공 여부
      */
-    @PostMapping("/changepassword")
+    @PutMapping("/changepassword")
     public ApiResponse<?> changePassword(
             @RequestBody @Valid UserDTO.ChangePasswordRequestDTO request
     ) {
