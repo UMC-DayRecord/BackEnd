@@ -6,6 +6,7 @@ import com.umc5th.dayrecord.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -38,7 +39,10 @@ public class UserQueryServiceImpl implements UserQueryService {
     public Optional<User> getUser(String email, String name) {
         return userRepository.getUserByEmailAndName(email, name);
     }
-
+    @Override
+    public Optional<User> getUser(String nickName) {
+        return userRepository.getUserByNickname(nickName);
+    }
     @Override
     public boolean existId(Long userId) {
         return userRepository.existsById(userId);
@@ -51,13 +55,26 @@ public class UserQueryServiceImpl implements UserQueryService {
      */
     @Override
     public boolean isCurrentUser(String username) {
+        return this.getLoggedInUserName()
+                .map(username::equals)
+                .orElse(false);
+    }
+
+
+    /**
+     * 현재 로그인한 사용자의 닉네임을 가져옵니다. 로그인 하지 않은 상태인 경우 Optional.empty()가 반환됩니다.
+     * @return 로그인한 사용자의 nickName, Optional<String>
+     */
+    @Override
+    public Optional<String> getLoggedInUserNickName() {
+        return this.getLoggedInUserName();
+    }
+
+    private Optional<String> getLoggedInUserName() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 로그인하지 않은 경우 false
-        if(authentication == null) return false;
+        if(authentication == null) return Optional.empty();
 
-        String currentUserUsername = authentication.getName();
-
-        return currentUserUsername.equals(username);
+        return Optional.of(authentication.getName());
     }
 }
