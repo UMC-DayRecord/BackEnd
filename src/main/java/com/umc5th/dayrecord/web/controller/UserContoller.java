@@ -118,7 +118,7 @@ public class UserContoller {
 
 
     /**
-     * 로그인 상태에서 사용자의 비밀 번호 변경
+     * 로그아웃 상태에서 사용자의 비밀번호 변경(초기화)
      * @param request UserDTO.ResetPasswordRequestDTO
      * @return 성공 여부
      */
@@ -126,8 +126,6 @@ public class UserContoller {
     public ApiResponse<?> resetPassword(
             @RequestBody @Valid UserDTO.ResetPasswordRequestDTO request
     ) {
-        // TODO: 로그인 토큰 유효성 검사
-
         // TODO: 디버그 기능 제거
         // 이메일 인증 여부 검사
 //        if(!verificationService.isTokenVerificated(request.getEmailVerificationToken())) {
@@ -139,6 +137,20 @@ public class UserContoller {
         // 모든 토큰이 유효하면 비밀번호 변경 진행
         boolean result = userCommandService.changePassword(request);
 
+        return ApiResponse.onSuccess(result);
+    }
+
+
+    /**
+     * 로그인 상태에서 사용자의 비밀번호 변경(설정)
+     * @param request UserDTO.ChangePasswordRequestDTO
+     * @return 성공 여부
+     */
+    @PostMapping("/changepassword")
+    public ApiResponse<?> changePassword(
+            @RequestBody @Valid UserDTO.ChangePasswordRequestDTO request
+    ) {
+        boolean result = userCommandService.changePassword(request);
         return ApiResponse.onSuccess(result);
     }
 
