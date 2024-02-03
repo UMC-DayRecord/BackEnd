@@ -5,4 +5,5 @@ import com.umc5th.dayrecord.web.dto.UserDTO;
 public interface UserCommandService {
     UserDTO.UserRegisterResponseDTO register(UserDTO.UserRegisterRequestDTO request);
     boolean changePassword(UserDTO.ResetPasswordRequestDTO request);
+    boolean changeProfilePhoto(UserDTO.changeProfilePhotoRequestDTO request);
 }
