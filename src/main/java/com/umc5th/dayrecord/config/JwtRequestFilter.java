@@ -31,7 +31,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws ServletException, IOException {
+            throws ServletException, IOException, IllegalArgumentException, ExpiredJwtException {
         // 토큰을 담은 헤더 정보 파싱
         final String requestTokenHeader = request.getHeader(AUTHORIZATION_HEADER);
 
@@ -44,16 +44,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             jwtToken = requestTokenHeader.substring(TOKEN_PREFIX.length());
 
             // TODO: 예외 핸들러로 처리
+
+            // 토큰으로부터 사용자 이름 파싱
+
             try {
-                // 토큰으로부터 사용자 이름 파싱
                 username = jwtTokenUtil.getUsernameFromToken(jwtToken);
             }
-            catch (IllegalArgumentException e) {
-                System.err.println("Unable to get JWT Token");
+            catch(ExpiredJwtException e) {
+                SecurityContextHolder.clearContext();
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT token expired.");
+                return;
             }
-            catch (ExpiredJwtException e) {
-                System.err.println("JWT Token has expired");
+            catch (Exception e) {
+                SecurityContextHolder.clearContext();
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "There was an error while parsing JWT token.");
+                return;
             }
+
         }
         else {
             logger.warn("JWT Token does not begin with Bearer String");
