@@ -3,7 +3,6 @@ package com.umc5th.dayrecord.web.controller;
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
-import com.umc5th.dayrecord.apiPayload.exception.handler.VerificationHandler;
 import com.umc5th.dayrecord.service.UserCommandService;
 import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.service.VerificationService;
@@ -141,6 +140,14 @@ public class UserContoller {
         boolean result = userCommandService.changePassword(request);
 
         return ApiResponse.onSuccess(result);
+    }
+
+
+    @PutMapping("/changeprofilephoto")
+    public ApiResponse<?> changeProfilePhoto(
+            @RequestBody @Valid UserDTO.changeProfilePhotoRequestDTO request
+    ) {
+        return ApiResponse.onSuccess(userCommandService.changeProfilePhoto(request));
     }
 
 
