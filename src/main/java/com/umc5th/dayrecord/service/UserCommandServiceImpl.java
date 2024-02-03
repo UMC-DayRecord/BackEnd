@@ -57,6 +57,22 @@ public class UserCommandServiceImpl implements UserCommandService {
         return true;
     }
 
+    public boolean changePassword(UserDTO.ChangePasswordRequestDTO request) {
+        // 현재 로그인한 사용자의 사용자 정보 조회
+        String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        User user = userQueryService.getUser(loggedInUserNickName)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
+
+        // 새 비밀번호 암호화 진행
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        // 변경 사항 저장
+        userRepository.save(user);
+        return true;
+    }
+
     /**
      * 사용자의 프로필 사진을 변경합니다.
      * @param request 새 사진 URL
