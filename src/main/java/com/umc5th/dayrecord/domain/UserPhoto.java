@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
