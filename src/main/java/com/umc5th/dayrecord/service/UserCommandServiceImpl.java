@@ -3,6 +3,7 @@ package com.umc5th.dayrecord.service;
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
 import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
+import com.umc5th.dayrecord.apiPayload.exception.handler.VerificationHandler;
 import com.umc5th.dayrecord.converter.UserConverter;
 import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.domain.UserPhoto;
@@ -58,6 +59,11 @@ public class UserCommandServiceImpl implements UserCommandService {
     }
 
     public boolean changePassword(UserDTO.ChangePasswordRequestDTO request) {
+        // 기존 비밀번호와 신규 비밀번호가 동일한 경우
+        if(request.getExistingPassword().equals(request.getNewPassword())) {
+            throw new VerificationHandler(ErrorStatus._BAD_REQUEST);
+        }
+
         // 현재 로그인한 사용자의 사용자 정보 조회
         String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
                 .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
@@ -65,8 +71,13 @@ public class UserCommandServiceImpl implements UserCommandService {
         User user = userQueryService.getUser(loggedInUserNickName)
                 .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
 
+        // 기존 비밀번호 검증
+        if(!passwordEncoder.matches(request.getExistingPassword(), user.getPassword())) {
+            throw new RegisterHandler(ErrorStatus._UNAUTHORIZED);
+        }
+
         // 새 비밀번호 암호화 진행
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
 
         // 변경 사항 저장
         userRepository.save(user);
