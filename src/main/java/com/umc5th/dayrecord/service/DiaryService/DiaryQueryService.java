@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DiaryQueryService {
 
-    Diary findDiary(Stream stream);
+    Diary findDiary(Long streamId);
 
     Diary saveDiaryPhotos(Long diaryId, List<String> list);
 

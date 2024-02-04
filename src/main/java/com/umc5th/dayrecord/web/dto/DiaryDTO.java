@@ -2,6 +2,7 @@ package com.umc5th.dayrecord.web.dto;
 
 import java.util.List;
 
+import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,24 @@ public class DiaryDTO {
         private Boolean isPublic;
         private List<diaryPhotoResponseDTO> diaryPhotoList;
 
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class diaryDetailDTO {
+        private Long streamId;
+        private String detail;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class requestDiaryDetailDTO {
+        @ExistStream
+        private Long streamId;
+        private String detail;
     }
 
 }

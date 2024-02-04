@@ -21,10 +21,9 @@ public class DiaryPhotoCommandServiceImpl implements DiaryPhotoCommandService {
     @Override
     public DiaryPhoto updatePhotoStream(DiaryPhotoDTO.changePhotoRequestDTO request) {
 
-        Stream stream = streamRepository.findById(request.getStreamId()).get();
         DiaryPhoto diaryPhoto = diaryPhotoRepository.findById(request.getDiaryPhotoId()).get();
 
-        Diary diary = diaryQueryService.findDiary(stream);
+        Diary diary = diaryQueryService.findDiary(request.getStreamId());
         diaryPhoto.updateDiary(diary);
 
         return diaryPhotoRepository.save(diaryPhoto);

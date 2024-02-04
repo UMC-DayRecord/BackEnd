@@ -31,4 +31,11 @@ public class DiaryConverter {
                 .diaryPhotoList(diaryPhotoDTOList)
                 .build();
     }
+
+    public static DiaryDTO.diaryDetailDTO diaryDetailResponse(Diary diary) {
+        return DiaryDTO.diaryDetailDTO.builder()
+                .streamId(diary.getStream().getId())
+                .detail(diary.getDetail())
+                .build();
+    }
 }
