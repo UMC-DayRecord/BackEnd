@@ -38,4 +38,8 @@ public class Diary extends BaseEntity {
     public void updateVisible(Boolean isPublic) {
         this.isPublic = isPublic;
     }
+
+    public void setDiaryPhoto(List<DiaryPhoto> diaryPhotoList) {
+        this.diaryPhotoList = diaryPhotoList;
+    }
 }
