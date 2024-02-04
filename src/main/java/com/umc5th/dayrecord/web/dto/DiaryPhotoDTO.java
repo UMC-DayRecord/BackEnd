@@ -1,5 +1,7 @@
 package com.umc5th.dayrecord.web.dto;
 
+import com.umc5th.dayrecord.validation.annotation.ExistDiaryPhoto;
+import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,8 +13,10 @@ public class DiaryPhotoDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class changePhotoRequestDTO {
+        @ExistDiaryPhoto
         private Long diaryPhotoId;
-        private String streamName;
+        @ExistStream
+        private Long streamId;
     }
 
     @Getter
@@ -22,6 +26,7 @@ public class DiaryPhotoDTO {
     public static class photoResponseDTO {
         private Long diaryPhotoId;
         private Boolean status;
+        private Long streamId;
         private String streamName;
     }
 }
