@@ -1,18 +1,24 @@
 package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
+import com.umc5th.dayrecord.converter.DiaryConverter;
 import com.umc5th.dayrecord.converter.PostConverter;
 import com.umc5th.dayrecord.converter.StreamConveter;
+import com.umc5th.dayrecord.domain.Diary;
+import com.umc5th.dayrecord.domain.DiaryPhoto;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.service.DiaryService.DiaryQueryService;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckName;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
+import com.umc5th.dayrecord.validation.annotation.ExistDiary;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
+import com.umc5th.dayrecord.web.dto.DiaryDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
@@ -20,14 +26,17 @@ import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,6 +46,7 @@ public class StreamPrivateController {
     
     private final StreamQueryService streamQueryService;
     private final PostQueryService postQueryService;
+    private final DiaryQueryService diaryQueryService;
     
     /**
      *  마이스트림 메인화면
@@ -201,17 +211,12 @@ public class StreamPrivateController {
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 
+    @PostMapping(value = "/daliyBoard/photo/{diaryId}")
+    public  ApiResponse<DiaryDTO.diaryResponseDTO>  saveMultiImage(@ExistDiary @PathVariable(name = "diaryId") Long diaryId,
+                                        @Valid @RequestBody DiaryDTO.diaryRequestDTO images) {
 
-    /**
-     * 댓글 수정 API
-     * @param commentId
-     * @param request
-     * @return CommentDTO.commentResponseDTO
-    @PutMapping("/{commentId}")
-    public ApiResponse<CommentDTO.commentResponseDTO> changeComment(@ExistComment @PathVariable(name = "commentId") Long commentId,
-                                                                    @Valid @RequestBody CommentDTO.editCommentRequestDTO request) {
-        Comment comment = commentCommandService.updateComment(request, commentId);
-        return ApiResponse.onSuccess(CommentConverter.responseComment(comment, request.getUserId()));
+                                    
+        Diary diary = diaryQueryService.saveDiaryPhotos(diaryId, images.getImages());
+       return ApiResponse.onSuccess(DiaryConverter.responsePost(diary));
     }
-     */
 }
