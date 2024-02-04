@@ -36,6 +36,7 @@ public interface StreamQueryService {
 
     Boolean existById(Long streamId);
 
+    Stream changeVisibleStream(StreamDTO.visibleStreamRequestDTO request, Long userId, Long streamId);
     //Post updatePost(PostDTO.editPostRequestDTO request, Long postId)
     //  }
 }
