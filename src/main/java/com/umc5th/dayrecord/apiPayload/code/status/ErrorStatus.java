@@ -30,6 +30,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER404", "사용자를 찾을 수 없습니다."),
 
+    _USER_NOT_MATCH(HttpStatus.NOT_FOUND, "USER401", "사용자의 권한이 부족합니다."),
+
     _LOGIN_FAILED(HttpStatus.UNAUTHORIZED, "USER401", "아이디 또는 비밀번호가 맞지 않습니다."),
 
     _VERIFICATION_BAD_REQUEST(HttpStatus.BAD_REQUEST, "VERIFICATION400", "잘못된 인증 코드입니다."),
@@ -48,6 +50,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "댓글을 찾을 수 없습니다."),
 
     _PHOTO_NOT_FOUND(HttpStatus.NOT_FOUND, "PHOTO404", "사진을 찾을 수 없습니다."),
+    _DIRY_NOT_FOUNT(HttpStatus.NOT_FOUND, "DIARY404", "다이어리를 찾을 수 없습니다."),
     ;
 
 

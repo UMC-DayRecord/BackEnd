@@ -1,9 +1,11 @@
 package com.umc5th.dayrecord.service.PostService;
 
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.web.dto.PostDTO;
-
+ 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
@@ -83,9 +85,15 @@ public class PostQueryServiceImpl implements PostQueryService {
     }
 
     @Override
-    public Post changeVisiblePost(PostDTO.visiblePostRequestDTO request, Long userId, Long streamId){
-        Post post = postRepository.findById(request.getPostId()).get();
-        post.updateVisible(request.getIsPublic());
-        return postRepository.save(post);
+    public Post changeVisiblePost(PostDTO.visiblePostRequestDTO request, Long userId, Long postId){
+        Post post = postRepository.findById(postId).get();
+        if(userId.equals( post.getUser().getId() )){
+            post.updateVisible(request.getIsPublic());
+            postRepository.save(post);
+        }
+        else{
+            throw new RegisterHandler(ErrorStatus._USER_NOT_MATCH);
+        }
+        return post;
     }
 }

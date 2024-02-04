@@ -1,5 +1,7 @@
 package com.umc5th.dayrecord.service.StreamService;
 
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.domain.User;
@@ -73,6 +75,12 @@ public class StreamQueryServiceImpl implements StreamQueryService {
         Slice<Post> postList = streamRepository.findByStream(userId, streamId, PageRequest.of(page, 10));
         return postList;
     }
+    
+    @Override
+    public Slice<Post> getDaliyBoardList(Long userId, Long streamId, Integer page) {
+        Slice<Post> postList = streamRepository.findByStream(userId, streamId, PageRequest.of(page, 10));
+        return postList;
+    }
 
 
     @Override
@@ -97,5 +105,19 @@ public class StreamQueryServiceImpl implements StreamQueryService {
 
     // Post updatePost(PostDTO.editPostRequestDTO request, Long postId);
 
+    @Override
+    public Stream changeVisibleStream(StreamDTO.visibleStreamRequestDTO request, Long userId, Long streamId){
+        Stream stream = streamRepository.findById(streamId).get();
+        if(userId.equals( stream.getUser().getId() )) {
+            stream.updateVisible(request.getIsPublic());
+            streamRepository.save(stream);
+        }
+        else{
+            throw new RegisterHandler(ErrorStatus._USER_NOT_MATCH);
+        }
+        return stream;
+    }
+    //Post updatePost(PostDTO.editPostRequestDTO request, Long postId)
+    //  }
 }
 

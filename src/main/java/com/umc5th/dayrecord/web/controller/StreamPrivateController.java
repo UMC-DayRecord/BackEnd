@@ -1,18 +1,24 @@
 package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
+import com.umc5th.dayrecord.converter.DiaryConverter;
 import com.umc5th.dayrecord.converter.PostConverter;
-import com.umc5th.dayrecord.converter.StreamConveter;
+import com.umc5th.dayrecord.converter.StreamConverter;
+import com.umc5th.dayrecord.domain.Diary;
+import com.umc5th.dayrecord.domain.DiaryPhoto;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.service.DiaryService.DiaryQueryService;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckName;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
+import com.umc5th.dayrecord.validation.annotation.ExistDiary;
 import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
+import com.umc5th.dayrecord.web.dto.DiaryDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
@@ -20,14 +26,17 @@ import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 
 import org.springframework.data.domain.Slice;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,15 +46,35 @@ public class StreamPrivateController {
     
     private final StreamQueryService streamQueryService;
     private final PostQueryService postQueryService;
+    private final DiaryQueryService diaryQueryService;
     
-    
-//stream/private/my/{streamId}
-    // @DeleteMapping("/my/{streamId}")
+    /**
+     *  마이스트림 메인화면
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
     @GetMapping("/my/{streamId}")
     public ApiResponse<postSummaryListDTO> getStreamPostList(@ExistStream @PathVariable(name = "streamId") Long streamId,
                                                        @ExistUser @RequestParam(name = "userId") Long userId,
                                                        @CheckPage @RequestParam(name = "page") Integer page) {
         Slice<Post> postList = streamQueryService.getStreamPostList(userId, streamId, page - 1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+    /**
+     * 일기보드 화면 출력 API 
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
+    @GetMapping("/daliyBoard/{streamId}")
+    public ApiResponse<postSummaryListDTO> getdaliyBoardList(@ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                       @ExistUser @RequestParam(name = "userId") Long userId,
+                                                       @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = streamQueryService.getDaliyBoardList(userId, streamId, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
     /**
@@ -100,7 +129,7 @@ public class StreamPrivateController {
 
         List<Stream> streamList =  streamQueryService.getStreamList(userId, page);
             
-        return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
+        return ApiResponse.onSuccess(StreamConverter.responseStream(streamList));
     }
     //stream/private/my/{uesrId}/{streamId}
     @GetMapping("/my/{uesrId}/{streamId}")
@@ -172,27 +201,30 @@ public class StreamPrivateController {
 
 
     //stream/private/setvisibility/{userId}/{streamId}  ?visible={bool_visible}
-    @PutMapping("/setvisibility/{userId}/{streamId}")
-    public ApiResponse<PostDTO.postDetailDTO> changeVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+    @PutMapping("/stream-visible/{userId}/{streamId}")
+    public ApiResponse<StreamDTO.streamSummaryDTO> changeStreamVisible(@ExistUser @PathVariable(name = "userId") Long userId,
                                                             @ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                            @Valid @RequestBody StreamDTO.visibleStreamRequestDTO request
+                                                            ){
+        Stream stream = streamQueryService.changeVisibleStream(request, userId, streamId);          
+        return ApiResponse.onSuccess(StreamConverter.detailStream(stream));
+    }
+    @PutMapping("/post-visible/{userId}/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> changePostVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                            @ExistPost @PathVariable(name = "postId") Long postId,
                                                             @Valid @RequestBody PostDTO.visiblePostRequestDTO request
                                                             ){
                                                        
-        Post post = postQueryService.changeVisiblePost(request, userId, streamId);          
+        Post post = postQueryService.changeVisiblePost(request, userId, postId);          
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 
+    @PostMapping(value = "/daliyBoard/photo/{diaryId}")
+    public  ApiResponse<DiaryDTO.diaryResponseDTO>  saveMultiImage(@ExistDiary @PathVariable(name = "diaryId") Long diaryId,
+                                        @Valid @RequestBody DiaryDTO.diaryRequestDTO images) {
 
-    /**
-     * 댓글 수정 API
-     * @param commentId
-     * @param request
-     * @return CommentDTO.commentResponseDTO
-    @PutMapping("/{commentId}")
-    public ApiResponse<CommentDTO.commentResponseDTO> changeComment(@ExistComment @PathVariable(name = "commentId") Long commentId,
-                                                                    @Valid @RequestBody CommentDTO.editCommentRequestDTO request) {
-        Comment comment = commentCommandService.updateComment(request, commentId);
-        return ApiResponse.onSuccess(CommentConverter.responseComment(comment, request.getUserId()));
+                                    
+        Diary diary = diaryQueryService.saveDiaryPhotos(diaryId, images.getImages());
+       return ApiResponse.onSuccess(DiaryConverter.responsePost(diary));
     }
-     */
 }
