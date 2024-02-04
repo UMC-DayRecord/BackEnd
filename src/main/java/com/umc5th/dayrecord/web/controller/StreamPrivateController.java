@@ -48,14 +48,33 @@ public class StreamPrivateController {
     private final PostQueryService postQueryService;
     private final DiaryQueryService diaryQueryService;
     
-    
-//stream/private/my/{streamId}
-    // @DeleteMapping("/my/{streamId}")
+    /**
+     *  마이스트림 메인화면
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
     @GetMapping("/my/{streamId}")
     public ApiResponse<postSummaryListDTO> getStreamPostList(@ExistStream @PathVariable(name = "streamId") Long streamId,
                                                        @ExistUser @RequestParam(name = "userId") Long userId,
                                                        @CheckPage @RequestParam(name = "page") Integer page) {
         Slice<Post> postList = streamQueryService.getStreamPostList(userId, streamId, page - 1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+    /**
+     * 일기보드 화면 출력 API 
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
+    @GetMapping("/daliyBoard/{streamId}")
+    public ApiResponse<postSummaryListDTO> getdaliyBoardList(@ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                       @ExistUser @RequestParam(name = "userId") Long userId,
+                                                       @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = streamQueryService.getDaliyBoardList(userId, streamId, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
     /**
@@ -110,7 +129,7 @@ public class StreamPrivateController {
 
         List<Stream> streamList =  streamQueryService.getStreamList(userId, page);
             
-        return ApiResponse.onSuccess(StreamConveter.responseStream(streamList));
+        return ApiResponse.onSuccess(StreamConverter.responseStream(streamList));
     }
     //stream/private/my/{uesrId}/{streamId}
     @GetMapping("/my/{uesrId}/{streamId}")
@@ -182,13 +201,21 @@ public class StreamPrivateController {
 
 
     //stream/private/setvisibility/{userId}/{streamId}  ?visible={bool_visible}
-    @PutMapping("/setvisibility/{userId}/{streamId}")
-    public ApiResponse<PostDTO.postDetailDTO> changeVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+    @PutMapping("/stream-visible/{userId}/{streamId}")
+    public ApiResponse<StreamDTO.streamSummaryDTO> changeStreamVisible(@ExistUser @PathVariable(name = "userId") Long userId,
                                                             @ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                            @Valid @RequestBody StreamDTO.visibleStreamRequestDTO request
+                                                            ){
+        Stream stream = streamQueryService.changeVisibleStream(request, userId, streamId);          
+        return ApiResponse.onSuccess(StreamConverter.detailStream(stream));
+    }
+    @PutMapping("/post-visible/{userId}/{postId}")
+    public ApiResponse<PostDTO.postDetailDTO> changePostVisible(@ExistUser @PathVariable(name = "userId") Long userId,
+                                                            @ExistPost @PathVariable(name = "postId") Long postId,
                                                             @Valid @RequestBody PostDTO.visiblePostRequestDTO request
                                                             ){
                                                        
-        Post post = postQueryService.changeVisiblePost(request, userId, streamId);          
+        Post post = postQueryService.changeVisiblePost(request, userId, postId);          
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 

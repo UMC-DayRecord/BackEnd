@@ -3,6 +3,7 @@ package com.umc5th.dayrecord.service;
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
 import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
+import com.umc5th.dayrecord.apiPayload.exception.handler.VerificationHandler;
 import com.umc5th.dayrecord.converter.UserConverter;
 import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.domain.UserPhoto;
@@ -54,6 +55,61 @@ public class UserCommandServiceImpl implements UserCommandService {
         
         // 변경 사항 저장
         userRepository.save(user);
+        return true;
+    }
+
+    public boolean changePassword(UserDTO.ChangePasswordRequestDTO request) {
+        // 기존 비밀번호와 신규 비밀번호가 동일한 경우
+        if(request.getExistingPassword().equals(request.getNewPassword())) {
+            throw new VerificationHandler(ErrorStatus._BAD_REQUEST);
+        }
+
+        // 현재 로그인한 사용자의 사용자 정보 조회
+        String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        User user = userQueryService.getUser(loggedInUserNickName)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
+
+        // 기존 비밀번호 검증
+        if(!passwordEncoder.matches(request.getExistingPassword(), user.getPassword())) {
+            throw new RegisterHandler(ErrorStatus._UNAUTHORIZED);
+        }
+
+        // 새 비밀번호 암호화 진행
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        // 변경 사항 저장
+        userRepository.save(user);
+        return true;
+    }
+
+    /**
+     * 사용자의 프로필 사진을 변경합니다.
+     * @param request 새 사진 URL
+     * @return 변경 성공 여부
+     */
+    public boolean changeProfilePhoto(UserDTO.changeProfilePhotoRequestDTO request) {
+        // 로그인한 사용자 정보 가져오기
+        String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        // 로그인한 사용자의 User 엔티티 가져오기
+        User targetUser = userQueryService.getUser(loggedInUserNickName)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
+
+        UserPhoto photo = targetUser.getUserPhoto();
+
+        if(photo == null) {
+            photo = UserPhoto.builder()
+                    .user(targetUser)
+                    .build();
+        }
+
+        photo.setUrl(request.getProfilePhoto());
+        
+        // 변경 사항 저장
+        userRepository.save(targetUser);
         return true;
     }
 }

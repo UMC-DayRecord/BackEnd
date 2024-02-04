@@ -14,13 +14,22 @@ public interface StreamQueryService {
 
     List<Stream> getStreamList(Long userId, Integer page);
     /**
-     * 
+     * 마이스트림 메인화면
      * @param userId
      * @param streamId
      * @param page
      * @return Slice<Post>
      */
     Slice<Post> getStreamPostList(Long userId, Long streamId, Integer page);
+    /**
+     * 일기보드 화면 출력 API 
+     * getStreamPostList 과 내용 동일
+     * @param userId
+     * @param streamId
+     * @param page
+     * @return Slice<Post>
+     */
+    Slice<Post> getDaliyBoardList(Long userId, Long streamId, Integer page);
     /**
      * 공개 스트림의 getPostDetailInfo 와 동일.
      * 개별로 수정사항이 있을 것을 대비하여 분리함.
@@ -36,6 +45,7 @@ public interface StreamQueryService {
 
     Boolean existById(Long streamId);
 
+    Stream changeVisibleStream(StreamDTO.visibleStreamRequestDTO request, Long userId, Long streamId);
     //Post updatePost(PostDTO.editPostRequestDTO request, Long postId)
     //  }
 }

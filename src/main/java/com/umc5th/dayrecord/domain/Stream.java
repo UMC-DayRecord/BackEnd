@@ -30,4 +30,7 @@ public class Stream extends BaseEntity {
     @OneToMany(mappedBy = "stream", cascade = CascadeType.ALL)
     private List<StreamPhoto> streamPhotoList;
 
+    public void updateVisible(Boolean isPublic) {
+        this.isPublic = isPublic;
+    }
 }

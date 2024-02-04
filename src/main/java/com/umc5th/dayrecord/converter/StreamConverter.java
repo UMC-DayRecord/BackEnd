@@ -7,7 +7,7 @@ import org.springframework.data.domain.Slice;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class StreamConveter {
+public class StreamConverter {
     
     public static StreamDTO.streamSummaryDTO fetchStream(Stream stream) {
         // boolean like_check = stream.getLikesList().stream()
@@ -32,6 +32,17 @@ public class StreamConveter {
                 // .hasNext(streamList.hasNext())
                 // .isFirst(streamList.isFirst())
                 // .isLast(streamList.isLast())
+                .build();
+    }
+
+
+    public static StreamDTO.streamSummaryDTO detailStream(Stream stream) {
+
+        return StreamDTO.streamSummaryDTO.builder()
+                .streamId(stream.getId())
+                .streamName(stream.getStreamName())
+                .isPublic(stream.getIsPublic())
+                .userId(stream.getUser().getId())
                 .build();
     }
 }
