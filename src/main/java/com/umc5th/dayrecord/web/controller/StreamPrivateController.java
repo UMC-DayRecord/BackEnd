@@ -38,14 +38,33 @@ public class StreamPrivateController {
     private final StreamQueryService streamQueryService;
     private final PostQueryService postQueryService;
     
-    
-//stream/private/my/{streamId}
-    // @DeleteMapping("/my/{streamId}")
+    /**
+     *  마이스트림 메인화면
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
     @GetMapping("/my/{streamId}")
     public ApiResponse<postSummaryListDTO> getStreamPostList(@ExistStream @PathVariable(name = "streamId") Long streamId,
                                                        @ExistUser @RequestParam(name = "userId") Long userId,
                                                        @CheckPage @RequestParam(name = "page") Integer page) {
         Slice<Post> postList = streamQueryService.getStreamPostList(userId, streamId, page - 1);
+        return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+
+    /**
+     * 일기보드 화면 출력 API 
+     * @param streamId
+     * @param userId
+     * @param page
+     * @return
+     */
+    @GetMapping("/daliyBoard/{streamId}")
+    public ApiResponse<postSummaryListDTO> getdaliyBoardList(@ExistStream @PathVariable(name = "streamId") Long streamId,
+                                                       @ExistUser @RequestParam(name = "userId") Long userId,
+                                                       @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Post> postList = streamQueryService.getDaliyBoardList(userId, streamId, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
     }
     /**
