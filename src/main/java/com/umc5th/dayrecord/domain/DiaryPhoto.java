@@ -22,4 +22,12 @@ public class DiaryPhoto extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diary_id")
     private Diary diary;
+
+    public void updateDiary(Diary diary) {
+        this.diary = diary;
+    }
+
+    public void changeStatus(boolean status) {
+        this.status = status;
+    }
 }

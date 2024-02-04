@@ -3,7 +3,7 @@ package com.umc5th.dayrecord.web.controller;
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.converter.DiaryConverter;
 import com.umc5th.dayrecord.converter.PostConverter;
-import com.umc5th.dayrecord.converter.StreamConveter;
+import com.umc5th.dayrecord.converter.StreamConverter;
 import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.domain.DiaryPhoto;
 import com.umc5th.dayrecord.domain.Post;
