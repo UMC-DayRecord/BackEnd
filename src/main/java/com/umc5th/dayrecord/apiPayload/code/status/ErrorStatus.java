@@ -48,6 +48,8 @@ public enum ErrorStatus implements BaseErrorCode {
     _STREAM_NOT_FOUNT(HttpStatus.NOT_FOUND, "STREAM404", "스트림를 찾을 수 없습니다."),
 
     _COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND, "COMMENT404", "댓글을 찾을 수 없습니다."),
+
+    _DIRY_NOT_FOUNT(HttpStatus.NOT_FOUND, "DIARY404", "다이어리를 찾을 수 없습니다."),
     ;
 
 

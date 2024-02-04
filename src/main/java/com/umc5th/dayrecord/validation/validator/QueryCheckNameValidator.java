@@ -1,6 +1,6 @@
 package com.umc5th.dayrecord.validation.validator;
 
-import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus; 
 import com.umc5th.dayrecord.validation.annotation.CheckName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
