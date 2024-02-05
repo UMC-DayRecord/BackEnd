@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.domain.DiaryPhoto;
+import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.web.dto.DiaryDTO;
 
 public class DiaryConverter {
@@ -36,6 +38,14 @@ public class DiaryConverter {
         return DiaryDTO.diaryDetailDTO.builder()
                 .streamId(diary.getStream().getId())
                 .detail(diary.getDetail())
+                .build();
+    }
+
+    public static Diary createDiary(Stream stream, User user) {
+        return Diary.builder()
+                .stream(stream)
+                .user(user)
+                .isPublic(stream.getIsPublic())
                 .build();
     }
 }

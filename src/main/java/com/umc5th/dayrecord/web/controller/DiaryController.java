@@ -6,6 +6,7 @@ import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.service.DiaryService.DiaryCommandService;
 import com.umc5th.dayrecord.service.DiaryService.DiaryQueryService;
 import com.umc5th.dayrecord.validation.annotation.ExistStream;
+import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.DiaryDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -33,5 +34,12 @@ public class DiaryController {
     public ApiResponse<DiaryDTO.diaryDetailDTO> recordDiary(@Valid @RequestBody DiaryDTO.requestDiaryDetailDTO request) {
         Diary diary = diaryCommandService.recordDetail(request);
         return ApiResponse.onSuccess(DiaryConverter.diaryDetailResponse(diary));
+    }
+
+    @PostMapping("/save/{userId}")
+    public ApiResponse<String> saveDiary(@ExistUser @PathVariable Long userId) {
+        diaryCommandService.saveDiary(userId);
+
+        return ApiResponse.onSuccess("성공했습니다");
     }
 }

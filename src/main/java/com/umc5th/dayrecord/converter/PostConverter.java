@@ -1,10 +1,13 @@
 package com.umc5th.dayrecord.converter;
 
+import com.umc5th.dayrecord.domain.Diary;
+import com.umc5th.dayrecord.domain.DiaryPhoto;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.PostPhoto;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import org.springframework.data.domain.Slice;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,5 +80,21 @@ public class PostConverter {
                 .build();
     }
      */ 
-    
+
+    public static Post createPost(Diary diary) {
+        return Post.builder()
+                .user(diary.getUser())
+                .detail(diary.getDetail())
+                .isPublic(diary.getIsPublic())
+                .stream(diary.getStream())
+                .postPhotoList(new ArrayList<>())
+                .build();
+    }
+
+    public static PostPhoto convertDiaryPhoto(DiaryPhoto photo, Post post) {
+        return PostPhoto.builder()
+                .url(photo.getUrl())
+                .post(post)
+                .build();
+    }
 }
