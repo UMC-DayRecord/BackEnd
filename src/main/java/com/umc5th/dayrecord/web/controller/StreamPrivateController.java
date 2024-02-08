@@ -19,6 +19,7 @@ import com.umc5th.dayrecord.validation.annotation.ExistPost;
 import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.DiaryDTO;
+import com.umc5th.dayrecord.web.dto.DiaryDTO.diarySummaryListDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryListDTO;
@@ -64,18 +65,33 @@ public class StreamPrivateController {
     }
 
     /**
-     * 일기보드 화면 출력 API 
+     * 일기보드 화면 출력 API (post)
      * @param streamId
      * @param userId
      * @param page
      * @return
      */
-    @GetMapping("/daliyBoard/{streamId}")
-    public ApiResponse<postSummaryListDTO> getdaliyBoardList(@ExistStream @PathVariable(name = "streamId") Long streamId,
+    @Deprecated
+    @GetMapping("/daliyBoard/post/{streamId}")
+    public ApiResponse<postSummaryListDTO> getDaliyBoardList(@ExistStream @PathVariable(name = "streamId") Long streamId,
                                                        @ExistUser @RequestParam(name = "userId") Long userId,
                                                        @CheckPage @RequestParam(name = "page") Integer page) {
         Slice<Post> postList = streamQueryService.getDaliyBoardList(userId, streamId, page - 1);
         return ApiResponse.onSuccess(PostConverter.responsePost(postList, userId));
+    }
+    /**
+     * 일기보드 화면 출력 API (daily)
+     * @param userId
+     * @param page
+     * @return
+     */
+    @GetMapping("/daliyBoard/diary")
+    public ApiResponse<diarySummaryListDTO> getDaliyBoardDiaryList(
+                                                       @ExistUser @RequestParam(name = "userId") Long userId,
+                                                       @CheckPage @RequestParam(name = "page") Integer page) {
+        Slice<Diary> diaryList = diaryQueryService.getDaliyBoardDiaryList(userId, page - 1);
+        return ApiResponse.onSuccess(DiaryConverter.responseSummaryDiary(diaryList));
+        
     }
     /**
      * 마이스트림 검색
