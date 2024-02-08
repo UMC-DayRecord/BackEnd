@@ -40,6 +40,19 @@ public class DiaryController {
     public ApiResponse<String> saveDiary(@ExistUser @PathVariable Long userId) {
         diaryCommandService.saveDiary(userId);
 
-        return ApiResponse.onSuccess("성공했습니다");
+        return ApiResponse.onSuccess("일기를 저장했습니다.");
+    }
+
+    @PostMapping("/save")
+    public ApiResponse<String> saveDiary() {
+        diaryCommandService.saveDiary();
+
+        return ApiResponse.onSuccess("일기를 저장했습니다.");
+    }
+
+    @GetMapping("/preview/{streamId}")
+    public ApiResponse<DiaryDTO.priviewDiaryResponseDTO> previewDiary(@ExistStream @PathVariable(name = "streamId") Long streamId) {
+        Diary diary = diaryQueryService.findDiary(streamId);
+        return ApiResponse.onSuccess(DiaryConverter.diaryPreview(diary));
     }
 }

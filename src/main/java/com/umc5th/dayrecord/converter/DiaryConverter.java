@@ -37,6 +37,7 @@ public class DiaryConverter {
     public static DiaryDTO.diaryDetailDTO diaryDetailResponse(Diary diary) {
         return DiaryDTO.diaryDetailDTO.builder()
                 .streamId(diary.getStream().getId())
+                .streamImg(diary.getStream().getStreamPhotoList().get(0).getUrl())
                 .detail(diary.getDetail())
                 .build();
     }
@@ -46,6 +47,22 @@ public class DiaryConverter {
                 .stream(stream)
                 .user(user)
                 .isPublic(stream.getIsPublic())
+                .build();
+    }
+
+    public static DiaryDTO.priviewDiaryResponseDTO diaryPreview(Diary diary) {
+        List<String> diaryPhotoList = diary.getDiaryPhotoList().stream()
+                .filter((DiaryPhoto photo) -> !photo.isStatus())
+                .map(DiaryPhoto::getUrl)
+                .collect(Collectors.toList());
+
+        return DiaryDTO.priviewDiaryResponseDTO.builder()
+                .streamId(diary.getStream().getId())
+                .steramName(diary.getStream().getStreamName())
+                .imageList(diaryPhotoList)
+                .imgSize(diaryPhotoList.size())
+                .detail(diary.getDetail())
+                .createdAt(diary.getCreatedAt())
                 .build();
     }
 }
