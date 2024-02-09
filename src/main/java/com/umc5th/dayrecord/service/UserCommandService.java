@@ -7,4 +7,6 @@ public interface UserCommandService {
     boolean changePassword(UserDTO.ResetPasswordRequestDTO request);
     boolean changePassword(UserDTO.ChangePasswordRequestDTO request);
     boolean changeProfilePhoto(UserDTO.changeProfilePhotoRequestDTO request);
+
+    boolean leave();
 }
