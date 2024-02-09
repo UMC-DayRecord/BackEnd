@@ -66,7 +66,7 @@ public class VerificationServiceImpl implements VerificationService {
 
         Verification v = Verification.builder()
                 .token(token)
-//                .expireAt(LocalDateTime.now().plusMinutes(1)) // for debugging
+                .expireAt(LocalDateTime.now().plusMinutes(10)) // for debugging
                 .build();
 
         mailService.sendMessage(
@@ -131,27 +131,29 @@ public class VerificationServiceImpl implements VerificationService {
      * @return 해당 요청의 인증 여부
      */
     public boolean isTokenVerificated(String token) {
-        Verification v = verificationRepository.findVerificationByToken(token)
-                .orElseThrow(() -> new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_NOT_FOUND));
-
-        boolean isSuccess = v.getIsSuccess();
-        LocalDateTime expireAt = v.getExpireAt();
-
-        // 요청은 휘발적(한 번만 성공 여부 조회 가능)
-        verificationRepository.delete(v);
-
-        // 만료되었는지 확인
-        if(expireAt.isBefore(LocalDateTime.now())) {
-            // "요청이 만료됨" 예외 발생
-            throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_TIMED_OUT);
-        }
-
-        // 아직 인증이 완료되지 않은 요청인 경우
-        if (!isSuccess) {
-            // "요청이 완료되지 않음" 예외 발생
-            throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_UNAUTHORIZED);
-        }
-
+        // TODO: 디버그 기능 제거
         return true;
+//        Verification v = verificationRepository.findVerificationByToken(token)
+//                .orElseThrow(() -> new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_NOT_FOUND));
+//
+//        boolean isSuccess = v.getIsSuccess();
+//        LocalDateTime expireAt = v.getExpireAt();
+//
+//        // 요청은 휘발적(한 번만 성공 여부 조회 가능)
+//        verificationRepository.delete(v);
+//
+//        // 만료되었는지 확인
+//        if(expireAt.isBefore(LocalDateTime.now())) {
+//            // "요청이 만료됨" 예외 발생
+//            throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_TIMED_OUT);
+//        }
+//
+//        // 아직 인증이 완료되지 않은 요청인 경우
+//        if (!isSuccess) {
+//            // "요청이 완료되지 않음" 예외 발생
+//            throw new VerificationHandler(ErrorStatus._VERIFICATION_REQUEST_UNAUTHORIZED);
+//        }
+//
+//        return true;
     }
 }
