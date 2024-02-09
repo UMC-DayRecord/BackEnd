@@ -163,6 +163,11 @@ public class UserContoller {
         return ApiResponse.onSuccess(userCommandService.changeProfilePhoto(request));
     }
 
+    @DeleteMapping("/leave")
+    public ApiResponse<?> leave() {
+        return ApiResponse.onSuccess(userCommandService.leave());
+    }
+
 
     /**
      *
