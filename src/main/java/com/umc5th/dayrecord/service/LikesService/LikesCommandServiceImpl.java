@@ -17,14 +17,12 @@ import java.util.Optional;
 public class LikesCommandServiceImpl implements LikesCommandService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final LikesRepository likesRepository;
 
 
     @Override
-    public Boolean updateLikes(Long postId, Long userId) {
+    public Boolean updateLikes(Long postId, User user) {
         Post post = postRepository.findById(postId).get();
-        User user = userRepository.findById(userId).get();
         Optional<Likes> likes = likesRepository.findByPostAndUser(post, user);
         if(likes.isPresent()) {
             likesRepository.delete(likes.get());

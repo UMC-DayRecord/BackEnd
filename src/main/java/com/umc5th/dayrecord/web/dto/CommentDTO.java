@@ -16,8 +16,6 @@ public class CommentDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class commentRequestDTO {
-        @ExistUser
-        private Long userId;
         @NotEmpty(message = "내용을 입력해 주세요.")
         private String detail;
     }
@@ -52,17 +50,4 @@ public class CommentDTO {
     public static class commentSizeDTO {
         private Long commentSize;
     }
-
-
-
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class editCommentRequestDTO {
-        @ExistUser
-        private Long userId;
-        @NotEmpty(message = "수정할 내용을 입력해 주세요.")
-        private String editDetail;
-    }
-
 }

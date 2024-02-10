@@ -1,28 +1,29 @@
 package com.umc5th.dayrecord.service.DiaryService;
 
-import java.util.ArrayList;
+import com.umc5th.dayrecord.domain.Diary;
+import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.repository.DiaryRepository;
+import com.umc5th.dayrecord.repository.StreamRepository;
+import lombok.RequiredArgsConstructor;
+
 import java.util.List;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
-import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.domain.DiaryPhoto;
-import com.umc5th.dayrecord.domain.Post;
-import com.umc5th.dayrecord.domain.Stream;
-import com.umc5th.dayrecord.repository.DiaryRepository;
-
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class DiaryQueryServiceImpl implements DiaryQueryService {
 
     private final DiaryRepository diaryRepository;
+    private final StreamRepository streamRepository;
 
     @Override
-    public Diary findDiary(Stream stream) {
+    public Diary findDiary(Long streamId) {
+        Stream stream = streamRepository.findById(streamId).get();
         return diaryRepository.findByStream(stream);
     }
     @Override

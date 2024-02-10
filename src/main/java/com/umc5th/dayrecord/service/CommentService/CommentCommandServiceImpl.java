@@ -1,5 +1,7 @@
 package com.umc5th.dayrecord.service.CommentService;
 
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
 import com.umc5th.dayrecord.converter.CommentConverter;
 import com.umc5th.dayrecord.domain.Comment;
 import com.umc5th.dayrecord.domain.Post;
@@ -16,7 +18,6 @@ import org.springframework.stereotype.Service;
 public class CommentCommandServiceImpl implements CommentCommandService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
 
     /**
@@ -26,9 +27,8 @@ public class CommentCommandServiceImpl implements CommentCommandService {
      * @return Comment
      */
     @Override
-    public Comment createComment(CommentDTO.commentRequestDTO request, Long postId) {
+    public Comment createComment(CommentDTO.commentRequestDTO request, Long postId, User user) {
         Post post = postRepository.findById(postId).get();
-        User user = userRepository.findById(request.getUserId()).get();
         Comment comment = CommentConverter.saveComment(request, post, user);
         return commentRepository.save(comment);
     }
@@ -39,8 +39,13 @@ public class CommentCommandServiceImpl implements CommentCommandService {
      * @return Post(삭제 후 해당 게시글 댓글 수 return)
      */
     @Override
-    public Integer removeComment(Long commentId) {
+    public Integer removeComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).get();
+
+        // 댓글 작성자와 유저가 다른 경우
+        if(!comment.getUser().equals(user))
+            throw new UserNotFoundHandler(ErrorStatus._FORBIDDEN);
+
         Post post = comment.getPost();
         commentRepository.delete(comment);
         return post.getCommentList().size();
@@ -53,9 +58,13 @@ public class CommentCommandServiceImpl implements CommentCommandService {
      * @return Comment(수정된 댓글 반환)
      */
     @Override
-    public Comment updateComment(CommentDTO.editCommentRequestDTO request, Long commentId) {
+    public Comment updateComment(CommentDTO.commentRequestDTO request, Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).get();
-        comment.update(request.getEditDetail());
+        // 댓글 작성자와 유저가 다른 경우
+        if(!comment.getUser().equals(user))
+            throw new UserNotFoundHandler(ErrorStatus._FORBIDDEN);
+
+        comment.update(request.getDetail());
         return commentRepository.save(comment);
     }
 }

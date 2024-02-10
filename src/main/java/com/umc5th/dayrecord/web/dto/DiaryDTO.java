@@ -3,16 +3,13 @@ package com.umc5th.dayrecord.web.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-
-import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryDTO;
-
+import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import javax.validation.constraints.NotEmpty;
 
 public class DiaryDTO {
 
@@ -61,4 +58,36 @@ public class DiaryDTO {
         private Boolean isLast; // 마지막 페이지인지 여부
     }
 
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class diaryDetailDTO {
+        private Long streamId;
+        private String streamImg;
+        private String detail;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class requestDiaryDetailDTO {
+        @ExistStream
+        private Long streamId;
+        @NotEmpty(message = "내용을 입력해 주세요.")
+        private String detail;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class priviewDiaryResponseDTO {
+        private Long streamId;
+        private String steramName;
+        private List<String> imageList;
+        private Integer imgSize;
+        private String detail;
+        private LocalDateTime createdAt;
+    }
 }

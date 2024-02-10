@@ -7,9 +7,9 @@ import org.springframework.data.domain.Slice;
 
 import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.domain.DiaryPhoto;
-import com.umc5th.dayrecord.domain.Post;
+import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.web.dto.DiaryDTO;
-import com.umc5th.dayrecord.web.dto.PostDTO;
 
 public class DiaryConverter {
 
@@ -36,6 +36,37 @@ public class DiaryConverter {
                 .build();
     }
 
+    public static DiaryDTO.diaryDetailDTO diaryDetailResponse(Diary diary) {
+        return DiaryDTO.diaryDetailDTO.builder()
+                .streamId(diary.getStream().getId())
+                .streamImg(diary.getStream().getStreamPhotoList().get(0).getUrl())
+                .detail(diary.getDetail())
+                .build();
+    }
+
+    public static Diary createDiary(Stream stream, User user) {
+        return Diary.builder()
+                .stream(stream)
+                .user(user)
+                .isPublic(stream.getIsPublic())
+                .build();
+    }
+
+    public static DiaryDTO.priviewDiaryResponseDTO diaryPreview(Diary diary) {
+        List<String> diaryPhotoList = diary.getDiaryPhotoList().stream()
+                .filter((DiaryPhoto photo) -> !photo.isStatus())
+                .map(DiaryPhoto::getUrl)
+                .collect(Collectors.toList());
+
+        return DiaryDTO.priviewDiaryResponseDTO.builder()
+                .streamId(diary.getStream().getId())
+                .steramName(diary.getStream().getStreamName())
+                .imageList(diaryPhotoList)
+                .imgSize(diaryPhotoList.size())
+                .detail(diary.getDetail())
+                .createdAt(diary.getCreatedAt())
+                .build();
+    }
 
     public static DiaryDTO.diaryResponseDTO responseDiary(Diary diary) {
         List<DiaryDTO.diaryPhotoResponseDTO> diaryPhotoDTOList
