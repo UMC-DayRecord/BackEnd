@@ -19,8 +19,6 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     private final DiaryQueryService diaryQueryService;
     private final DiaryRepository diaryRepository;
     private final PostCommandService postCommandService;
-    private final UserRepository userRepository;
-
 
     // 일기 기록
     @Override
@@ -32,8 +30,7 @@ public class DiaryCommandServiceImpl implements DiaryCommandService {
     }
 
     @Override
-    public void saveDiary(Long userId) {
-        User user = userRepository.findById(userId).get();
+    public void saveDiary(User user) {
         for(Stream stream : user.getStreamList()) {
             Diary diary = diaryQueryService.findDiary(stream.getId());
             Post post = postCommandService.createPost(diary);

@@ -112,4 +112,15 @@ public class UserCommandServiceImpl implements UserCommandService {
         userRepository.save(targetUser);
         return true;
     }
+
+    public boolean leave() {
+        String user = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        User targetUser = userRepository.getUserByNickname(user)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        userRepository.delete(targetUser);
+        return true;
+    }
 }

@@ -1,13 +1,12 @@
 spring:
-  datasource:
-    url:
-    username:
-    password:
+  datasource: 
+    url: jdbc:mysql://dayrecord.ctizjtx2utrj.ap-northeast-2.rds.amazonaws.com:3306/DayRecord
+    username: dayrecord
+    password: dayrecord!!^^
     driver-class-name: com.mysql.cj.jdbc.Driver
   jwt:
     secret:
     issuer:
-
   sql:
     init:
       mode: never
@@ -22,10 +21,10 @@ spring:
           auto: update
         default_batch_fetch_size: 1000
   mail:
-    username:
-    password:
-    protocol:
+    host: test
+    username: user
+    password: password
+    protocol: smtp
     port: 465
 
 server:
-  port: 8080

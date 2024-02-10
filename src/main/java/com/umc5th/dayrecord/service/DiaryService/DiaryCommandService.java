@@ -9,7 +9,7 @@ public interface DiaryCommandService {
 
     Diary recordDetail(DiaryDTO.requestDiaryDetailDTO request);
 
-    void saveDiary(Long userId);
+    void saveDiary(User user);
 
     void deleteDiary(Diary diary);
 

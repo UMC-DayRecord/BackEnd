@@ -22,7 +22,7 @@ public interface StreamQueryService {
      */
     Slice<Post> getStreamPostList(Long userId, Long streamId, Integer page);
     /**
-     * 일기보드 화면 출력 API 
+     * 일기보드 화면 출력 API (post)
      * getStreamPostList 과 내용 동일
      * @param userId
      * @param streamId

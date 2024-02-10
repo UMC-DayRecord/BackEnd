@@ -19,6 +19,7 @@ public class PostDTO {
     public static class postSummaryDTO {
         private Long postId;
         private String nickname;
+        private String detail;
         private List<String> postImg;
         private Long likes; // 좋아요 수
         private Boolean isLike; // 좋아요 클릭 여부

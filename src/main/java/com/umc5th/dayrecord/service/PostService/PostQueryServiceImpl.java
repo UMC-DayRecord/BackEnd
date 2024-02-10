@@ -2,8 +2,11 @@ package com.umc5th.dayrecord.service.PostService;
 
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
+import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
 import com.umc5th.dayrecord.domain.Post;
+import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.PostRepository;
+import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.web.dto.PostDTO;
  
 import lombok.RequiredArgsConstructor;
@@ -26,6 +29,13 @@ public class PostQueryServiceImpl implements PostQueryService {
     @Override
     public Slice<Post> getPostList(Long userId, Integer page) {
         Slice<Post> postList = postRepository.findByPost(userId, PageRequest.of(page, 10));
+        return postList;
+    }
+
+    @Override
+    public Slice<Post> getPostList(User user, Integer page) {
+
+        Slice<Post> postList = postRepository.findByPost(user.getId(), PageRequest.of(page, 10));
         return postList;
     }
 

@@ -19,6 +19,7 @@ public class PostConverter {
 
         return PostDTO.postSummaryDTO.builder()
                 .postId(post.getId())
+                .detail(post.getDetail())
                 .nickname(post.getUser().getNickname())
                 .postImg(post.getPostPhotoList().stream()
                         .map(PostPhoto::getUrl)

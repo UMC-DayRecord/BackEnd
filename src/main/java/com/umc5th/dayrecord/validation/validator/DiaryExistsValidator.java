@@ -26,7 +26,7 @@ private final DiaryQueryService diaryQueryService;
     public boolean isValid(Long value, ConstraintValidatorContext context) {
         if (!diaryQueryService.existById(value)){
             context.disableDefaultConstraintViolation();
-            context.buildConstraintViolationWithTemplate(ErrorStatus._DIRY_NOT_FOUNT.toString()).addConstraintViolation();
+            context.buildConstraintViolationWithTemplate(ErrorStatus._DIARY_NOT_FOUNT.toString()).addConstraintViolation();
             return false;
         }
         return true;

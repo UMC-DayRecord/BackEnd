@@ -46,6 +46,17 @@ public class DiaryDTO {
         private List<diaryPhotoResponseDTO> diaryPhotoList;
 
     }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class diarySummaryListDTO {
+        private List<diaryResponseDTO> diaryList;
+        private Integer listSize; // 페이지 크기
+        private Boolean hasNext; // 다음 페이지 여부
+        private Boolean isFirst; // 첫 번째 페이지인지 여부
+        private Boolean isLast; // 마지막 페이지인지 여부
+    }
 
     @Getter
     @Builder
