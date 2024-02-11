@@ -8,6 +8,8 @@ import java.util.List;
 import com.umc5th.dayrecord.validation.annotation.ExistStream;
 import com.umc5th.dayrecord.web.dto.PostDTO.postSummaryDTO;
 
+import javax.validation.constraints.NotNull;
+
 public class StreamDTO {
 
     @Getter
@@ -51,5 +53,14 @@ public class StreamDTO {
     @AllArgsConstructor
     public static class visibleStreamRequestDTO {
         private Boolean isPublic;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ChangeStreamKeywordRequestDTO {
+        @NotNull(message = "변경할 스트림 키워드는 반드시 입력해야 합니다.")
+        private String keyword;
+        private Long streamId;
     }
 }
