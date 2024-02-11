@@ -7,6 +7,7 @@ import com.umc5th.dayrecord.domain.Stream;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StreamQueryService {
 
@@ -48,4 +49,6 @@ public interface StreamQueryService {
     Stream changeVisibleStream(StreamDTO.visibleStreamRequestDTO request, Long userId, Long streamId);
     //Post updatePost(PostDTO.editPostRequestDTO request, Long postId)
     //  }
+
+    Optional<Stream> getStreamFromLoggedOnUserStreamList(Long streamId);
 }
