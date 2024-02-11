@@ -2,12 +2,14 @@ package com.umc5th.dayrecord.service.StreamService;
 
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.RegisterHandler;
+import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.repository.StreamRepository;
 import com.umc5th.dayrecord.repository.UserRepository;
+import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
 
@@ -26,6 +28,8 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     private final StreamRepository streamRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+
+    private final UserQueryService userQueryService;
     
 
     @Override
@@ -119,5 +123,20 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     }
     //Post updatePost(PostDTO.editPostRequestDTO request, Long postId)
     //  }
+
+    @Override
+    public Optional<Stream> getStreamFromLoggedOnUserStreamList(Long streamId) {
+        String currentUser = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        User user = userQueryService.getUser(currentUser)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
+
+        List<Stream> userStreamList = user.getStreamList();
+
+        return userStreamList.stream()
+                .filter(stream -> stream.getId().equals(streamId))
+                .findAny();
+    }
 }
 
