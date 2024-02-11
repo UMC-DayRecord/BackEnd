@@ -20,10 +20,10 @@ public class UserQueryServiceImpl implements UserQueryService {
         return userRepository.existsUserByEmail(email);
     }
 
-    @Override
-    public boolean isDuplicatePhoneNumber(String phoneNumber) {
-        return userRepository.existsUserByPhoneNumber(phoneNumber);
-    }
+//    @Override
+//    public boolean isDuplicatePhoneNumber(String phoneNumber) {
+//        return userRepository.existsUserByPhoneNumber(phoneNumber);
+//    }
 
     @Override
     public boolean isDuplicateNickName(String nickName) {

@@ -1,7 +1,6 @@
 package com.umc5th.dayrecord.converter;
 
 import com.umc5th.dayrecord.domain.User;
-import com.umc5th.dayrecord.domain.UserPhoto;
 import com.umc5th.dayrecord.web.dto.UserDTO;
 import lombok.Builder;
 
@@ -16,13 +15,12 @@ public class UserConverter {
                 .name(request.getName())
                 .nickname(request.getNickName())
                 .password(request.getPassword())
-                .phoneNumber(request.getPhoneNumber())
+//                .phoneNumber(request.getPhoneNumber())
                 .email(request.getEmail())
                 .streamPurchase(false)
                 .addBlockPurchase(false)
                 .autoIndexPurchase(false)
                 .streamCount(0L)
-//                .userPhoto(request.getUserPhoto())
 
                 .likesList(new ArrayList<>())
                 .streamList(new ArrayList<>())

@@ -25,7 +25,7 @@ public class UserCommandServiceImpl implements UserCommandService {
     public UserDTO.UserRegisterResponseDTO register(UserDTO.UserRegisterRequestDTO request) {
         // 중복된 이메일 또는 전화번호인 경우 처리
         if(userQueryService.isDuplicateEmail(request.getEmail())) throw new RegisterHandler(ErrorStatus._EMAIL_DUPLICATE);
-        if(userQueryService.isDuplicatePhoneNumber(request.getPhoneNumber())) throw new RegisterHandler(ErrorStatus._PHONE_NUMBER_DUPLICATE);
+//        if(userQueryService.isDuplicatePhoneNumber(request.getPhoneNumber())) throw new RegisterHandler(ErrorStatus._PHONE_NUMBER_DUPLICATE);
         if(userQueryService.isDuplicateNickName(request.getNickName())) throw new RegisterHandler(ErrorStatus._NICKNAME_DUPLICATE);
 
         // 비밀번호 암호화 진행

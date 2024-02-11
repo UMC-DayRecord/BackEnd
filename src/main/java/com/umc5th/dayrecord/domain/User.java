@@ -28,8 +28,8 @@ public class User extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(length = 15, unique = true, nullable = false)
-    private String phoneNumber;
+//    @Column(length = 15, unique = true, nullable = false)
+//    private String phoneNumber;
 
     @Column(length = 30, unique = true, nullable = false)
     private String email;
