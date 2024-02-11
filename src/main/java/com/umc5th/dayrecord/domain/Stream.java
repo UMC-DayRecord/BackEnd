@@ -2,6 +2,9 @@ package com.umc5th.dayrecord.domain;
 
 import com.umc5th.dayrecord.domain.common.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,6 +14,8 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @Entity
+@DynamicInsert
+@DynamicUpdate
 public class Stream extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +34,9 @@ public class Stream extends BaseEntity {
 
     @OneToMany(mappedBy = "stream", cascade = CascadeType.ALL)
     private List<StreamPhoto> streamPhotoList;
+
+    @ColumnDefault(value = "'없음'")
+    private String keyword;
 
     public void updateVisible(Boolean isPublic) {
         this.isPublic = isPublic;
