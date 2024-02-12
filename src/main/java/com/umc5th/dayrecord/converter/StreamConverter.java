@@ -18,6 +18,7 @@ public class StreamConverter {
                 .streamName(stream.getStreamName())
                 .isPublic(stream.getIsPublic())
                 .userId(stream.getUser().getId())
+                .keyword(stream.getKeyword())
                 .build();
     }
 
@@ -43,6 +44,7 @@ public class StreamConverter {
                 .streamName(stream.getStreamName())
                 .isPublic(stream.getIsPublic())
                 .userId(stream.getUser().getId())
+                .keyword(stream.getKeyword())
                 .build();
     }
 }
