@@ -21,6 +21,7 @@ public class StreamDTO {
         private Long streamId;
         private String streamName;
         private Boolean isPublic; // 공개 여부
+        private String keyword;
         private Integer page;
     }
 
@@ -32,6 +33,7 @@ public class StreamDTO {
         private Long userId;
         private Long streamId;
         private String streamName;
+        private String keyword;
         //private List<postSummaryDTO> postList;
         private Boolean isPublic; // 공개 여부
     }
