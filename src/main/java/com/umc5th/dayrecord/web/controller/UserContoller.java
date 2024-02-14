@@ -4,6 +4,7 @@ import com.umc5th.dayrecord.apiPayload.ApiResponse;
 import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
 import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
 import com.umc5th.dayrecord.apiPayload.exception.handler.VerificationHandler;
+import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.service.UserCommandService;
 import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.service.VerificationService;
@@ -66,6 +67,8 @@ public class UserContoller {
         // DB로부터 request에 대응하는 userDetails 가져오기
         final UserDetails userDetails = userDetailsService.loadUserByUsername(request.getNickName());
 
+        final User user = userQueryService.getUser(userDetails.getUsername())
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._COMMENT_NOT_FOUND));
 
         // 가져온 userDetails를 기반으로 새 토큰 생성
         final String token = jwtTokenUtil.generateToken(userDetails);
@@ -76,7 +79,7 @@ public class UserContoller {
                         .builder()
                         .token(token)
                         .nickName(userDetails.getUsername())
-
+                        .userId(user.getId())
                         .build()
         );
     }

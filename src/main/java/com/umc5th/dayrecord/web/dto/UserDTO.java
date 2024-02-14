@@ -79,6 +79,8 @@ public class UserDTO {
         private String nickName;
 
         private String token;
+
+        private Long userId;
     }
 
     @Getter
