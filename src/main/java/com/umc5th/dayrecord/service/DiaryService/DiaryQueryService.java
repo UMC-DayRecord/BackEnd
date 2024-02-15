@@ -6,13 +6,15 @@ import com.umc5th.dayrecord.domain.Stream;
 
 import java.util.List;
 
+import com.umc5th.dayrecord.domain.User;
 import org.springframework.data.domain.Slice;
 
 public interface DiaryQueryService {
 
     Diary findDiary(Long streamId);
 
-    Diary saveDiaryPhotos(Long diaryId, List<String> list);
+    //Diary saveDiaryPhotos(Long diaryId, List<String> list);
+    Diary saveDiaryPhotos(User user, List<String> list);
 
     boolean existById(Long value);
 
