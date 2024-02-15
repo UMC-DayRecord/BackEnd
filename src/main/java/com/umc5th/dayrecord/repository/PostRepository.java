@@ -14,6 +14,6 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @Query("SELECT p FROM Post p WHERE p.isPublic = true AND (p.user.id <> :userId)")
     Slice<Post> findByPost(@Param("userId") Long userId, PageRequest pageRequest);
 
-    @Query("SELECT p FROM Post p WHERE (p.isPublic = true) AND (p.user.id <> :userId) AND (p.detail LIKE %:query% OR p.stream.streamName LIKE %:query%)")
+    @Query("SELECT p FROM Post p WHERE (p.isPublic = true) AND (p.user.id <> :userId) AND (p.detail LIKE %:query% OR p.stream.streamName LIKE %:query% OR p.stream.keyword LIKE %:query%)")
     Slice<Post> findBySearchPost(@Param("userId") Long userId, @Param("query") String query, PageRequest pageRequest);
 }

@@ -9,6 +9,7 @@ import com.umc5th.dayrecord.domain.User;
 import com.umc5th.dayrecord.repository.PostRepository;
 import com.umc5th.dayrecord.repository.StreamRepository;
 import com.umc5th.dayrecord.repository.UserRepository;
+import com.umc5th.dayrecord.service.DiaryService.DiaryCommandService;
 import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.web.dto.PostDTO;
 import com.umc5th.dayrecord.web.dto.StreamDTO;
@@ -30,6 +31,8 @@ public class StreamQueryServiceImpl implements StreamQueryService {
     private final PostRepository postRepository;
 
     private final UserQueryService userQueryService;
+
+    private final DiaryCommandService diaryCommandService;
     
 
     @Override
@@ -47,6 +50,9 @@ public class StreamQueryServiceImpl implements StreamQueryService {
         // System.out.println("stream" + stream);
         
         streamRepository.save(stream);
+
+        // 스트림 생성 시, 다이어리 생성
+        diaryCommandService.createDiary(stream, user.get());
 
         StreamDTO.streamDefaultDTO streamResponse = StreamDTO.streamDefaultDTO.builder()
             .userId(stream.getUser().getId())
