@@ -4,12 +4,15 @@ import com.umc5th.dayrecord.domain.Diary;
 import com.umc5th.dayrecord.domain.Post;
 import com.umc5th.dayrecord.domain.Stream;
 
+import com.umc5th.dayrecord.domain.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
@@ -20,4 +23,6 @@ public interface DiaryRepository extends JpaRepository<Diary, Long> {
     // Slice<Diary> findByUserId(@Param("userId") Long userId, PageRequest pageRequest);
 
     Slice<Diary> findByUserId(Long userId, PageRequest pageRequest);
+
+    List<Diary> findAllByUser(User user);
 }

@@ -1,16 +1,16 @@
 package com.umc5th.dayrecord.web.controller;
 
 import com.umc5th.dayrecord.apiPayload.ApiResponse;
+import com.umc5th.dayrecord.apiPayload.code.status.ErrorStatus;
+import com.umc5th.dayrecord.apiPayload.exception.handler.UserNotFoundHandler;
 import com.umc5th.dayrecord.converter.DiaryConverter;
 import com.umc5th.dayrecord.converter.PostConverter;
 import com.umc5th.dayrecord.converter.StreamConverter;
-import com.umc5th.dayrecord.domain.Diary;
-import com.umc5th.dayrecord.domain.DiaryPhoto;
-import com.umc5th.dayrecord.domain.Post;
-import com.umc5th.dayrecord.domain.Stream;
+import com.umc5th.dayrecord.domain.*;
 import com.umc5th.dayrecord.service.DiaryService.DiaryQueryService;
 import com.umc5th.dayrecord.service.PostService.PostQueryService;
 import com.umc5th.dayrecord.service.StreamService.StreamQueryService;
+import com.umc5th.dayrecord.service.UserQueryService;
 import com.umc5th.dayrecord.validation.annotation.CheckName;
 import com.umc5th.dayrecord.validation.annotation.CheckPage;
 import com.umc5th.dayrecord.validation.annotation.CheckQuery;
@@ -48,6 +48,7 @@ public class StreamPrivateController {
     private final StreamQueryService streamQueryService;
     private final PostQueryService postQueryService;
     private final DiaryQueryService diaryQueryService;
+    private final UserQueryService userQueryService;
     
     /**
      *  마이스트림 메인화면
@@ -235,12 +236,26 @@ public class StreamPrivateController {
         return ApiResponse.onSuccess(PostConverter.detailPost(post));
     }
 
-    @PostMapping(value = "/daliyBoard/photo/{diaryId}")
+    /*@PostMapping(value = "/daliyBoard/photo/{diaryId}")
     public  ApiResponse<DiaryDTO.diaryResponseDTO>  saveMultiImage(@ExistDiary @PathVariable(name = "diaryId") Long diaryId,
                                         @Valid @RequestBody DiaryDTO.diaryRequestDTO images) {
 
                                     
         Diary diary = diaryQueryService.saveDiaryPhotos(diaryId, images.getImages());
        return ApiResponse.onSuccess(DiaryConverter.responsePost(diary));
+    }*/
+
+    @PostMapping(value = "/daliyBoard/photo")
+    public  ApiResponse<DiaryDTO.diaryResponseDTO>  saveMultiImage(@Valid @RequestBody DiaryDTO.diaryRequestDTO images) {
+
+        // 현재 로그인한 사용자의 사용자 정보 조회
+        String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._UNAUTHORIZED));
+
+        User user = userQueryService.getUser(loggedInUserNickName)
+                .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
+
+        Diary diary = diaryQueryService.saveDiaryPhotos(user, images.getImages());
+        return ApiResponse.onSuccess(DiaryConverter.responsePost(diary));
     }
 }
