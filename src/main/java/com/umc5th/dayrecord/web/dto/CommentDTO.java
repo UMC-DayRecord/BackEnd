@@ -29,6 +29,7 @@ public class CommentDTO {
         private String nickname;
         private String detail;
         private Boolean isAuthor;
+        private String profilePhoto;
     }
 
     @Getter

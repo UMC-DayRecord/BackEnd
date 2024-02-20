@@ -17,6 +17,11 @@ public class PostConverter {
         boolean like_check = post.getLikesList().stream()
                 .anyMatch(like -> like != null && like.getUser().getId().equals(userId));
 
+        String profilePhotoUrl = "";
+        if (!post.getStream().getStreamPhotoList().isEmpty()) {
+            profilePhotoUrl = post.getStream().getStreamPhotoList().get(0).getUrl();
+        }
+
         return PostDTO.postSummaryDTO.builder()
                 .postId(post.getId())
                 .detail(post.getDetail())
@@ -30,6 +35,7 @@ public class PostConverter {
                 .comments(Long.valueOf(post.getCommentList().size()))
                 .isPublic(post.getIsPublic())
                 .createdAt(post.getCreatedAt())
+                .profilePhoto(profilePhotoUrl)
                 .build();
     }
 

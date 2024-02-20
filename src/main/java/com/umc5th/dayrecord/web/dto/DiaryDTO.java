@@ -27,6 +27,7 @@ public class DiaryDTO {
     @AllArgsConstructor
     public static class diaryPhotoResponseDTO {
         private Long id;
+        private Long streamId;
         private String url;
         private boolean status;
     }

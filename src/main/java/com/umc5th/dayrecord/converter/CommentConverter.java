@@ -22,11 +22,17 @@ public class CommentConverter {
     public static CommentDTO.commentResponseDTO responseComment(Comment comment, Long userId) {
         boolean isAuthor = comment.getUser().getId().equals(userId);
 
+        String profilePhotoUrl = "";
+        if (comment.getUser().getUserPhoto() != null) {
+            profilePhotoUrl = comment.getUser().getUserPhoto().getUrl();
+        }
+
         return CommentDTO.commentResponseDTO.builder()
                 .commentId(comment.getId())
                 .nickname(comment.getUser().getNickname())
                 .detail(comment.getDetail())
                 .isAuthor(isAuthor)
+                .profilePhoto(profilePhotoUrl)
                 .build();
     }
 

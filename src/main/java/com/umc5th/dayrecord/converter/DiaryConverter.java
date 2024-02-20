@@ -18,6 +18,7 @@ public class DiaryConverter {
 
         return DiaryDTO.diaryPhotoResponseDTO.builder()
                 .id(diaryPhoto.getId())
+                .streamId(diaryPhoto.getDiary().getStream().getId())
                 .url(diaryPhoto.getUrl())
                 .status(diaryPhoto.isStatus())
                 .build();
@@ -37,9 +38,14 @@ public class DiaryConverter {
     }
 
     public static DiaryDTO.diaryDetailDTO diaryDetailResponse(Diary diary) {
+        String streamImgUrl = "";
+        if (!diary.getStream().getStreamPhotoList().isEmpty()) {
+            streamImgUrl = diary.getStream().getStreamPhotoList().get(0).getUrl();
+        }
+
         return DiaryDTO.diaryDetailDTO.builder()
                 .streamId(diary.getStream().getId())
-                .streamImg(diary.getStream().getStreamPhotoList().get(0).getUrl())
+                .streamImg(streamImgUrl)
                 .detail(diary.getDetail())
                 .build();
     }

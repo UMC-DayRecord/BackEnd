@@ -26,6 +26,7 @@ public class PostDTO {
         private Long comments; // 댓글 수
         private Boolean isPublic; // 공개 여부
         private LocalDateTime createdAt;
+        private String profilePhoto;
     }
 
     @Getter
