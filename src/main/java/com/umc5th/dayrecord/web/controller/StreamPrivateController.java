@@ -73,8 +73,8 @@ public class StreamPrivateController {
 
         User user = userQueryService.getUser(loggedInUserNickName)
                 .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
-
-        Slice<Post> postList = streamQueryService.getStreamPostList(user.getId(), userId));
+                Slice<Post> postList = streamQueryService.getStreamPostList(user.getId(), streamId, page - 1);
+                return ApiResponse.onSuccess(PostConverter.responsePost(postList, user.getId()));
     }
 
     /**
