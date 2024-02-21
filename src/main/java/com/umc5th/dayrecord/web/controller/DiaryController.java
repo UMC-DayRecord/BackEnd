@@ -14,6 +14,7 @@ import com.umc5th.dayrecord.validation.annotation.ExistUser;
 import com.umc5th.dayrecord.web.dto.DiaryDTO;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +50,7 @@ public class DiaryController {
     }*/
 
     // jwt 토큰 적용
-    @PostMapping("/save")
+    /*@PostMapping("/save")
     public ApiResponse<String> saveDiary() {
         // 현재 로그인한 사용자의 사용자 정보 조회
         String loggedInUserNickName = userQueryService.getLoggedInUserNickName()
@@ -59,6 +60,14 @@ public class DiaryController {
                 .orElseThrow(() -> new UserNotFoundHandler(ErrorStatus._USER_NOT_FOUND));
 
         diaryCommandService.saveDiary(user);
+
+        return ApiResponse.onSuccess("일기를 저장했습니다.");
+    }*/
+
+    @Scheduled(cron = "0 0 0 * * ?") // 매일 자정에 실행
+    @PostMapping("/save")
+    public ApiResponse<String> saveDiary() {
+        diaryCommandService.saveDiary();
 
         return ApiResponse.onSuccess("일기를 저장했습니다.");
     }

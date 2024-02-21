@@ -9,7 +9,8 @@ public interface DiaryCommandService {
 
     Diary recordDetail(DiaryDTO.requestDiaryDetailDTO request);
 
-    void saveDiary(User user);
+    //void saveDiary(User user);
+    void saveDiary();
 
     void deleteDiary(Diary diary);
 
